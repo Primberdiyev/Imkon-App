@@ -10,4 +10,7 @@ class AppImages {
   static const String preLevel = 'assets/images/pre_level.png';
   static const String middleLevel = 'assets/images/middle_level.png';
   static const String expert = 'assets/images/expert.png';
+  static const String mathFone = 'assets/images/math_fone.jpg';
+  static const String blueFone = 'assets/images/blue_fon.jpg';
+  static const String whiteFone = 'assets/images/white_fon.jpg';
 }

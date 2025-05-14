@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:imkon/features/home/pages/home_page.dart';
-import 'package:imkon/features/introduction/pages/begin_page.dart';
 import 'package:imkon/features/utils/app_images.dart';
 
 class SplashPage extends StatefulWidget {
@@ -25,9 +24,19 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue,
-      body: Center(
-        child: Image.asset(AppImages.bigBird, height: 200, width: 200),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(AppImages.whiteFone),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Center(
+          child: Image.asset(AppImages.bigBird, height: 200, width: 200),
+        ),
       ),
     );
   }

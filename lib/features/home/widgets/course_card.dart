@@ -20,7 +20,7 @@ class CourseCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final bgColor =
         isInProgress
-            ? Color.alphaBlend(Colors.black.withOpacity(0.1), color)
+            ? Color.alphaBlend(Colors.black.withValues(alpha: 0.1), color)
             : color;
 
     return Container(

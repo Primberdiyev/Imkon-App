@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:imkon/features/cources/math_cource/pages/math_cource_page.dart';
 import 'package:imkon/features/home/widgets/course_card.dart';
 
 class Fields extends StatelessWidget {
@@ -23,7 +24,12 @@ class Fields extends StatelessWidget {
           title: 'Bepul Matematika Kursi',
           subtitle: "Matematikani tez, oson va\nsamarali o'rganing",
           color: const Color(0xFFFFF599),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MathCourcePage()),
+            );
+          },
         ),
         CourseCard(
           title: 'Intensiv Ona Tili Kursi',
