@@ -88,7 +88,7 @@ class _AskingKnowledgePageState extends State<AskingKnowledgePage> {
                   : null,
           text: 'Davom Ettirish',
           textSize: 24,
-          buttonColor: selectedItem != null ? Colors.purple : Colors.grey,
+          buttonColor: selectedItem != null ? Color(0xFFFFD700) : Colors.grey,
           textColor: Colors.white,
         ),
       ),

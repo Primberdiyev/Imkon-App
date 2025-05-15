@@ -46,7 +46,7 @@ class BeginPage extends StatelessWidget {
               },
               text: 'Boshlash',
               textSize: 28,
-              buttonColor: Colors.purple,
+              buttonColor: Color(0xFFFFD700),
               textColor: Colors.white,
             ),
             SizedBox(height: 50),

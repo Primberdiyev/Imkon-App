@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:imkon/core/ui_kit/custom_button.dart';
 import 'package:imkon/features/cources/math_cource/dialogs/attention_dialog.dart';
+import 'package:imkon/features/cources/math_cource/pages/math_game_beginner.dart';
+import 'package:imkon/features/cources/math_cource/pages/multiplication_page.dart';
 
 class MathCourcePage extends StatelessWidget {
   const MathCourcePage({super.key});
@@ -19,7 +21,20 @@ class MathCourcePage extends StatelessWidget {
               function: () {
                 showDialog(
                   context: context,
-                  builder: (context) => AttentionDialog(),
+                  builder:
+                      (context) => AttentionDialog(
+                        function: () {
+                          Navigator.of(context).pop();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => MathGameBeginner(),
+                            ),
+                          );
+                        },
+                        text:
+                            'Sizga random sonlar beriladi va siz ularni tezkorlik bilan hisoblashingiz kerak.\n\nO‘yin boshlaymizmi?',
+                      ),
                 );
               },
               text: '(0...............99)±',
@@ -30,6 +45,25 @@ class MathCourcePage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 30),
               child: CustomButton(
+                function: () {
+                  showDialog(
+                    context: context,
+                    builder:
+                        (context) => AttentionDialog(
+                          function: () {
+                            Navigator.of(context).pop();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => MultiplicationGamePage(),
+                              ),
+                            );
+                          },
+                          text:
+                              'Sizga random sonlar beriladi va siz ularni tezkorlik bilan kopaytirishingiz kerak.\n\nO‘yin boshlaymizmi?',
+                        ),
+                  );
+                },
                 text: '(0...............9) x',
                 textSize: 24,
                 buttonColor: Color(0xFF91F48F),

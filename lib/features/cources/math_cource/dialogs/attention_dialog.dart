@@ -2,7 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:imkon/features/cources/math_cource/pages/math_game_beginner.dart';
 
 class AttentionDialog extends StatelessWidget {
-  const AttentionDialog({super.key});
+  const AttentionDialog({
+    super.key,
+    required this.text,
+    required this.function,
+  });
+  final String text;
+  final Function() function;
 
   @override
   Widget build(BuildContext context) {
@@ -11,10 +17,7 @@ class AttentionDialog extends StatelessWidget {
         '🧠 Diqqat!',
         style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
       ),
-      content: Text(
-        'Sizga random sonlar beriladi va siz ularni tezkorlik bilan hisoblashingiz kerak.\n\nO‘yin boshlaymizmi?',
-        style: TextStyle(fontSize: 18, color: Colors.black),
-      ),
+      content: Text(text, style: TextStyle(fontSize: 18, color: Colors.black)),
       actions: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -24,13 +27,7 @@ class AttentionDialog extends StatelessWidget {
               child: Text('Bekor qilish'),
             ),
             ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => MathGameBeginner()),
-                );
-              },
+              onPressed: function,
               child: Text('Boshlash', style: TextStyle()),
             ),
           ],

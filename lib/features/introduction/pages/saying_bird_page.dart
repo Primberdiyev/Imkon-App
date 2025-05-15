@@ -32,6 +32,7 @@ class SayingBirdPage extends StatelessWidget {
             padding: const EdgeInsets.only(left: 40),
             child: Image.asset(
               'assets/images/saying_bird.png',
+
               height: 150,
               width: 150,
             ),
@@ -47,7 +48,7 @@ class SayingBirdPage extends StatelessWidget {
               },
               text: 'Davom Ettirish',
               textSize: 24,
-              buttonColor: Colors.purple,
+              buttonColor: Color(0xFFFFD700),
               textColor: Colors.white,
             ),
           ),

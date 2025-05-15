@@ -113,7 +113,7 @@ class _RegisterPageState extends State<RegisterPage> {
               },
               text: 'Ro\'yxatdan o\'tish',
               textSize: 20,
-              buttonColor: Colors.purple,
+              buttonColor: Color(0xFFFFD700),
               textColor: Colors.white,
             ),
             SizedBox(height: 50),
