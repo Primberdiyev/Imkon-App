@@ -173,93 +173,98 @@ class _MathGameBeginnerState extends State<MathGameBeginner>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.orange.shade50,
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/math_fon.jpg'),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child:
-                isGameStarted
-                    ? Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        if (questionIndex < controller.questions.length)
-                          Column(
-                            children: [
-                              ScaleTransition(
-                                scale: Tween(begin: 0.5, end: 1.0).animate(
-                                  CurvedAnimation(
-                                    parent: _animationController,
-                                    curve: Curves.elasticOut,
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/math_fon.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child:
+                    isGameStarted
+                        ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            if (questionIndex < controller.questions.length)
+                              Column(
+                                children: [
+                                  ScaleTransition(
+                                    scale: Tween(begin: 0.5, end: 1.0).animate(
+                                      CurvedAnimation(
+                                        parent: _animationController,
+                                        curve: Curves.elasticOut,
+                                      ),
+                                    ),
+                                    child: Text(
+                                      controller.questions[questionIndex],
+                                      style: const TextStyle(
+                                        fontSize: 64,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                                child: Text(
-                                  controller.questions[questionIndex],
-                                  style: const TextStyle(
-                                    fontSize: 64,
-                                    fontWeight: FontWeight.bold,
+                                  const SizedBox(height: 20),
+                                  Text(
+                                    '⏱ Vaqt: $questionCountdown',
+                                    style: const TextStyle(
+                                      fontSize: 24,
+                                      color: Colors.red,
+                                    ),
                                   ),
-                                ),
+                                ],
+                              )
+                            else if (isAnswering)
+                              Column(
+                                children: [
+                                  const Text(
+                                    'Natijani kiriting:',
+                                    style: TextStyle(fontSize: 24),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  TextField(
+                                    controller: answerController,
+                                    keyboardType: TextInputType.number,
+                                    decoration: const InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      hintText: 'Javobingiz',
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  ElevatedButton(
+                                    onPressed: checkAnswer,
+                                    child: const Text('Tekshirish'),
+                                  ),
+                                ],
                               ),
-                              const SizedBox(height: 20),
-                              Text(
-                                '⏱ Vaqt: $questionCountdown',
-                                style: const TextStyle(
-                                  fontSize: 24,
-                                  color: Colors.red,
-                                ),
+                          ],
+                        )
+                        : Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              "O'yin boshlanishiga qoldi:",
+                              style: TextStyle(fontSize: 24),
+                            ),
+                            const SizedBox(height: 20),
+                            Text(
+                              '$countdown',
+                              style: const TextStyle(
+                                fontSize: 48,
+                                fontWeight: FontWeight.bold,
                               ),
-                            ],
-                          )
-                        else if (isAnswering)
-                          Column(
-                            children: [
-                              const Text(
-                                'Natijani kiriting:',
-                                style: TextStyle(fontSize: 24),
-                              ),
-                              const SizedBox(height: 10),
-                              TextField(
-                                controller: answerController,
-                                keyboardType: TextInputType.number,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  hintText: 'Javobingiz',
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              ElevatedButton(
-                                onPressed: checkAnswer,
-                                child: const Text('Tekshirish'),
-                              ),
-                            ],
-                          ),
-                      ],
-                    )
-                    : Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "O'yin boshlanishiga qoldi:",
-                          style: TextStyle(fontSize: 24),
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 20),
-                        Text(
-                          '$countdown',
-                          style: const TextStyle(
-                            fontSize: 48,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
+              ),
+            ),
           ),
-        ),
+          Positioned(top: 60, left: 10, child: BackButton(color: Colors.black)),
+        ],
       ),
     );
   }

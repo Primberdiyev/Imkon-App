@@ -25,9 +25,19 @@ class AttentionDialog extends StatelessWidget {
               onPressed: () => Navigator.of(context).pop(),
               child: Text('Bekor qilish'),
             ),
-            ElevatedButton(
+            TextButton(
               onPressed: function,
-              child: Text('Boshlash', style: TextStyle()),
+
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.green,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+              child: Text(
+                'Boshlash',
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
             ),
           ],
         ),

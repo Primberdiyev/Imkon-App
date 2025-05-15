@@ -153,64 +153,69 @@ class _MultiplicationGamePageState extends State<MultiplicationGamePage> {
 
     return Scaffold(
       backgroundColor: Colors.orange.shade50,
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/math_fon.jpg'),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (displayText != null)
-                  Text(
-                    displayText,
-                    style: const TextStyle(fontSize: 48),
-                    textAlign: TextAlign.center,
-                  ),
-                if (!showInput && preCountdown == 0)
-                  Text(
-                    "⏱ $countdown",
-                    style: const TextStyle(fontSize: 24, color: Colors.red),
-                  ),
-                if (showInput) ...[
-                  const SizedBox(height: 20),
-                  TextField(
-                    controller: controller,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: "Javobingizni kiriting",
-                    ),
-                  ),
-                  const SizedBox(height: 100),
-                  TextButton(
-                    onPressed: checkAnswer,
-                    style: TextButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/math_fon.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (displayText != null)
+                      Text(
+                        displayText,
+                        style: const TextStyle(fontSize: 48),
+                        textAlign: TextAlign.center,
                       ),
-                      fixedSize: Size(200, 50),
-                      backgroundColor: Color(0xFFFFD700),
-                    ),
-                    child: const Text(
-                      "Tekshirish",
-                      style: TextStyle(
-                        fontFamily: 'myFirstFont',
-                        color: Colors.white,
-                        fontSize: 20,
+                    if (!showInput && preCountdown == 0)
+                      Text(
+                        "⏱ $countdown",
+                        style: const TextStyle(fontSize: 24, color: Colors.red),
                       ),
-                    ),
-                  ),
-                ],
-              ],
+                    if (showInput) ...[
+                      const SizedBox(height: 20),
+                      TextField(
+                        controller: controller,
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: "Javobingizni kiriting",
+                        ),
+                      ),
+                      const SizedBox(height: 100),
+                      TextButton(
+                        onPressed: checkAnswer,
+                        style: TextButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          fixedSize: Size(200, 50),
+                          backgroundColor: Color(0xFFFFD700),
+                        ),
+                        child: const Text(
+                          "Tekshirish",
+                          style: TextStyle(
+                            fontFamily: 'myFirstFont',
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
             ),
           ),
-        ),
+          Positioned(top: 60, left: 10, child: BackButton(color: Colors.black)),
+        ],
       ),
     );
   }

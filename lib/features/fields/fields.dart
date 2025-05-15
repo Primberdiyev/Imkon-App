@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:imkon/features/cources/math_cource/pages/math_cource_page.dart';
 import 'package:imkon/features/home/widgets/course_card.dart';
+import 'package:imkon/features/utils/app_images.dart';
 
 class Fields extends StatelessWidget {
   const Fields({super.key});
@@ -21,6 +22,7 @@ class Fields extends StatelessWidget {
           ],
         ),
         CourseCard(
+          imagePath: AppImages.tools,
           title: 'Bepul Matematika Kursi',
           subtitle: "Matematikani tez, oson va\nsamarali o'rganing",
           color: const Color(0xFFFFF599),

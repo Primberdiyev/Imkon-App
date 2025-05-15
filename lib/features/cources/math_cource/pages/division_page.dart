@@ -176,60 +176,65 @@ class _DivisionGamePageState extends State<DivisionGamePage> {
 
     return Scaffold(
       backgroundColor: Colors.blue.shade50,
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/math_fon.jpg'),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (displayText != null)
-                  Text(
-                    displayText,
-                    style: const TextStyle(fontSize: 48),
-                    textAlign: TextAlign.center,
-                  ),
-                if (!showInput && preCountdown == 0)
-                  Text(
-                    "⏱ $countdown",
-                    style: const TextStyle(fontSize: 24, color: Colors.red),
-                  ),
-                if (showInput) ...[
-                  const SizedBox(height: 20),
-                  TextField(
-                    controller: controller,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: "Javobingizni kiriting",
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  TextButton(
-                    onPressed: checkAnswer,
-                    style: TextButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
+      body: Stack(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/math_fon.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (displayText != null)
+                      Text(
+                        displayText,
+                        style: const TextStyle(fontSize: 48),
+                        textAlign: TextAlign.center,
                       ),
-                      fixedSize: const Size(200, 50),
-                      backgroundColor: const Color(0xFF1E90FF),
-                    ),
-                    child: const Text(
-                      "Tekshirish",
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                    ),
-                  ),
-                ],
-              ],
+                    if (!showInput && preCountdown == 0)
+                      Text(
+                        "⏱ $countdown",
+                        style: const TextStyle(fontSize: 24, color: Colors.red),
+                      ),
+                    if (showInput) ...[
+                      const SizedBox(height: 20),
+                      TextField(
+                        controller: controller,
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: "Javobingizni kiriting",
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      TextButton(
+                        onPressed: checkAnswer,
+                        style: TextButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          fixedSize: const Size(200, 50),
+                          backgroundColor: const Color(0xFF1E90FF),
+                        ),
+                        child: const Text(
+                          "Tekshirish",
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
             ),
           ),
-        ),
+          Positioned(top: 60, left: 10, child: BackButton(color: Colors.black)),
+        ],
       ),
     );
   }

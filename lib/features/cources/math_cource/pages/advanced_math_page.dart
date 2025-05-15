@@ -173,30 +173,35 @@ class _MathGameAdvancedState extends State<MathGameAdvanced>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.orange.shade50,
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/math_fon.jpg'),
-            fit: BoxFit.cover,
+      body: Stack(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/math_fon.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child:
+                    _isGameStarted
+                        ? _isTimerQuestions
+                            ? _buildTimerQuestions()
+                            : !_isInitialQuestionsDone
+                            ? _buildInitialStepByStepQuestions()
+                            : Column(
+                              children: [
+                                const Text('Keyingi bosqich yuklanmoqda...'),
+                              ],
+                            )
+                        : _buildCountdown(),
+              ),
+            ),
           ),
-        ),
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child:
-                _isGameStarted
-                    ? _isTimerQuestions
-                        ? _buildTimerQuestions()
-                        : !_isInitialQuestionsDone
-                        ? _buildInitialStepByStepQuestions()
-                        : Column(
-                          children: [
-                            const Text('Keyingi bosqich yuklanmoqda...'),
-                          ],
-                        )
-                    : _buildCountdown(),
-          ),
-        ),
+          Positioned(top: 60, left: 10, child: BackButton(color: Colors.black)),
+        ],
       ),
     );
   }
