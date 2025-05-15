@@ -3,59 +3,84 @@ import 'dart:math';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
-class MultiplicationGamePage extends StatefulWidget {
-  const MultiplicationGamePage({super.key});
+class DivisionGamePage extends StatefulWidget {
+  const DivisionGamePage({super.key});
 
   @override
-  State<MultiplicationGamePage> createState() => _MultiplicationGamePageState();
+  State<DivisionGamePage> createState() => _DivisionGamePageState();
 }
 
-class _MultiplicationGamePageState extends State<MultiplicationGamePage> {
-  List<int> numbers = [];
+class _DivisionGamePageState extends State<DivisionGamePage> {
+  final AudioPlayer _audioPlayer = AudioPlayer();
+
+  final List<int> divisors = [2, 5, 1, 2];
+  int startNumber = 0;
   int currentIndex = -1;
   bool showInput = false;
   int preCountdown = 5;
   int countdown = 10;
   Timer? timer;
   TextEditingController controller = TextEditingController();
-  final AudioPlayer _audioPlayer = AudioPlayer();
+  int count = 0;
+  final List<int> possibleStartNumbers = [60, 80, 100, 120];
+  final Random random = Random();
 
   @override
   void initState() {
     super.initState();
-    generateNumbers();
+    startNewGame();
+  }
+
+  void startNewGame() {
+    generateStartNumber();
     startPreCountdown();
   }
 
-  void generateNumbers() {
-    numbers.clear();
-    Random random = Random();
-    for (int i = 0; i < 4; i++) {
-      numbers.add(random.nextInt(4) + 1);
-    }
+  void generateStartNumber() {
+    startNumber =
+        possibleStartNumbers[random.nextInt(possibleStartNumbers.length)];
   }
 
   void startPreCountdown() {
+    setState(() {
+      currentIndex = -1;
+      showInput = false;
+      preCountdown = 5;
+      countdown = 10;
+      controller.clear();
+    });
+
+    timer?.cancel();
     timer = Timer.periodic(const Duration(seconds: 1), (t) {
       setState(() {
         preCountdown--;
         if (preCountdown == 0) {
           t.cancel();
-          startNextNumberTimer();
-          currentIndex = 0;
+          startDivisionProcess();
         }
       });
     });
   }
 
+  void startDivisionProcess() {
+    setState(() {
+      currentIndex = 0;
+    });
+    startNextNumberTimer();
+  }
+
   void startNextNumberTimer() {
-    countdown = 10;
+    setState(() {
+      countdown = 10;
+    });
+
+    timer?.cancel();
     timer = Timer.periodic(const Duration(seconds: 1), (t) {
       setState(() {
         countdown--;
         if (countdown == 0) {
           t.cancel();
-          if (currentIndex < numbers.length - 1) {
+          if (currentIndex < divisors.length) {
             currentIndex++;
             startNextNumberTimer();
           } else {
@@ -68,20 +93,26 @@ class _MultiplicationGamePageState extends State<MultiplicationGamePage> {
 
   void checkAnswer() async {
     int userAnswer = int.tryParse(controller.text.trim()) ?? 0;
-    int correctAnswer = numbers.fold(1, (prev, element) => prev * element);
+    int currentValue = startNumber;
+    for (int i = 0; i < divisors.length; i++) {
+      currentValue = currentValue ~/ divisors[i];
+    }
+    int correctAnswer = currentValue;
 
     showDialog(
       context: context,
       builder:
           (context) => AlertDialog(
             title: Text(
-              userAnswer == correctAnswer ? "✅ Barakalla!" : "❌ Notog‘ri",
+              userAnswer == correctAnswer ? "✅ Barakalla!" : "❌ Notog'ri",
             ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text("Siz kiritdingiz: $userAnswer"),
-                Text("To‘g‘ri javob: $correctAnswer"),
+                Text("To'g'ri javob: $correctAnswer"),
+                const SizedBox(height: 10),
+                Text("Boshlang'ich son: $startNumber"),
               ],
             ),
             actions: [
@@ -101,10 +132,10 @@ class _MultiplicationGamePageState extends State<MultiplicationGamePage> {
                 ),
                 onPressed: () {
                   Navigator.pop(context);
-                  restartGame();
+                  startNewGame();
                 },
                 child: const Text(
-                  "Yana o‘ynash",
+                  "Yana o'ynash",
                   style: TextStyle(color: Colors.white),
                 ),
               ),
@@ -116,17 +147,6 @@ class _MultiplicationGamePageState extends State<MultiplicationGamePage> {
         await _audioPlayer.play(AssetSource('musics/success1.mp3'));
       }
     }
-  }
-
-  void restartGame() {
-    setState(() {
-      controller.clear();
-      currentIndex = -1;
-      showInput = false;
-      preCountdown = 5;
-    });
-    generateNumbers();
-    startPreCountdown();
   }
 
   @override
@@ -141,20 +161,23 @@ class _MultiplicationGamePageState extends State<MultiplicationGamePage> {
     String? displayText;
 
     if (preCountdown > 0) {
-      displayText = "O‘yin boshlanishiga qoldi:\n$preCountdown";
+      displayText = "O'yin boshlanishiga qoldi:\n$preCountdown";
     } else if (!showInput &&
         currentIndex >= 0 &&
-        currentIndex < numbers.length) {
-      displayText =
-          currentIndex == 0
-              ? "${numbers[currentIndex]}"
-              : "x ${numbers[currentIndex]}";
+        currentIndex <= divisors.length) {
+      if (currentIndex == 0) {
+        displayText = "$startNumber";
+      } else if (currentIndex < divisors.length) {
+        displayText = "÷ ${divisors[currentIndex]}";
+      } else if (currentIndex == divisors.length) {
+        displayText = "÷ ${divisors.last}";
+      }
     }
 
     return Scaffold(
-      backgroundColor: Colors.orange.shade50,
+      backgroundColor: Colors.blue.shade50,
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/images/math_fon.jpg'),
             fit: BoxFit.cover,
@@ -187,23 +210,19 @@ class _MultiplicationGamePageState extends State<MultiplicationGamePage> {
                       hintText: "Javobingizni kiriting",
                     ),
                   ),
-                  const SizedBox(height: 100),
+                  const SizedBox(height: 20),
                   TextButton(
                     onPressed: checkAnswer,
                     style: TextButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      fixedSize: Size(200, 50),
-                      backgroundColor: Color(0xFFFFD700),
+                      fixedSize: const Size(200, 50),
+                      backgroundColor: const Color(0xFF1E90FF),
                     ),
                     child: const Text(
                       "Tekshirish",
-                      style: TextStyle(
-                        fontFamily: 'myFirstFont',
-                        color: Colors.white,
-                        fontSize: 20,
-                      ),
+                      style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
                   ),
                 ],

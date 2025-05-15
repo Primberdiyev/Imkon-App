@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:imkon/features/cources/math_cource/pages/math_game_beginner.dart';
 
 class AttentionDialog extends StatelessWidget {
   const AttentionDialog({

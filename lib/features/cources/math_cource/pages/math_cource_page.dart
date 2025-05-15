@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:imkon/core/ui_kit/custom_button.dart';
 import 'package:imkon/features/cources/math_cource/dialogs/attention_dialog.dart';
+import 'package:imkon/features/cources/math_cource/pages/advanced_math_page.dart';
+import 'package:imkon/features/cources/math_cource/pages/division_page.dart';
 import 'package:imkon/features/cources/math_cource/pages/math_game_beginner.dart';
 import 'package:imkon/features/cources/math_cource/pages/multiplication_page.dart';
 
@@ -71,6 +73,25 @@ class MathCourcePage extends StatelessWidget {
               ),
             ),
             CustomButton(
+              function: () {
+                showDialog(
+                  context: context,
+                  builder:
+                      (context) => AttentionDialog(
+                        function: () {
+                          Navigator.of(context).pop();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => DivisionGamePage(),
+                            ),
+                          );
+                        },
+                        text:
+                            'Sizga random sonlar beriladi va siz ularni tezkorlik bilan bo\'lishingiz kerak.\n\nO‘yin boshlaymizmi?',
+                      ),
+                );
+              },
               text: '(0...............50) %',
               textSize: 24,
               buttonColor: Color(0xFFFFF599),
@@ -79,6 +100,25 @@ class MathCourcePage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 30),
               child: CustomButton(
+                function: () {
+                  showDialog(
+                    context: context,
+                    builder:
+                        (context) => AttentionDialog(
+                          function: () {
+                            Navigator.of(context).pop();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => MathGameAdvanced(),
+                              ),
+                            );
+                          },
+                          text:
+                              'Sizga random sonlar beriladi va siz ularni tezkorlik bilan kopaytirishingiz kerak.\n\nO‘yin boshlaymizmi?',
+                        ),
+                  );
+                },
                 text: '(0...............50) ± x  %',
                 textSize: 24,
                 buttonColor: Color(0xFFB69CFF),

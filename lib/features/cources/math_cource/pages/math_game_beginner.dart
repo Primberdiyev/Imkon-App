@@ -13,7 +13,6 @@ class MathGameBeginner extends StatefulWidget {
 class _MathGameBeginnerState extends State<MathGameBeginner>
     with SingleTickerProviderStateMixin {
   final AudioPlayer _audioPlayer = AudioPlayer();
-
   int countdown = 5;
   int questionCountdown = 5;
   int questionIndex = 0;
