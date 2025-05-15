@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:imkon/features/cources/math_cource/methods/math_game_methods.dart';
 
@@ -11,6 +12,8 @@ class MathGameBeginner extends StatefulWidget {
 
 class _MathGameBeginnerState extends State<MathGameBeginner>
     with SingleTickerProviderStateMixin {
+  final AudioPlayer _audioPlayer = AudioPlayer();
+
   int countdown = 5;
   int questionCountdown = 5;
   int questionIndex = 0;
@@ -74,7 +77,7 @@ class _MathGameBeginnerState extends State<MathGameBeginner>
     }
   }
 
-  void checkAnswer() {
+  void checkAnswer() async {
     if (answerController.text.trim().isEmpty) return;
     bool isCorrect = controller.checkUserAnswer(answerController.text);
     int correct = controller.getCorrectAnswer();
@@ -86,7 +89,7 @@ class _MathGameBeginnerState extends State<MathGameBeginner>
           (ctx) => AlertDialog(
             title: Center(
               child: Text(
-                isCorrect ? '✅ To‘g‘ri!' : '❌ Notog‘ri!',
+                isCorrect ? '✅ Barakalla!' : '❌ Notog‘ri!',
                 textAlign: TextAlign.center,
               ),
             ),
@@ -109,6 +112,12 @@ class _MathGameBeginnerState extends State<MathGameBeginner>
                     child: const Text('Bosh Sahifa'),
                   ),
                   TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
                     onPressed: () {
                       Navigator.of(ctx).pop();
                       if (isCorrect) {
@@ -119,13 +128,24 @@ class _MathGameBeginnerState extends State<MathGameBeginner>
                         restartGame(reset: true);
                       }
                     },
-                    child: const Text('Davom etish'),
+                    child: const Text(
+                      'Davom etish',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'myFirstFont',
+                      ),
+                    ),
                   ),
                 ],
               ),
             ],
           ),
     );
+    if (isCorrect) {
+      if (isCorrect) {
+        await _audioPlayer.play(AssetSource('musics/success1.mp3'));
+      }
+    }
   }
 
   void restartGame({bool reset = false}) {
@@ -145,6 +165,8 @@ class _MathGameBeginnerState extends State<MathGameBeginner>
     questionTimer?.cancel();
     answerController.dispose();
     _animationController.dispose();
+    _audioPlayer.dispose();
+
     super.dispose();
   }
 
@@ -152,84 +174,92 @@ class _MathGameBeginnerState extends State<MathGameBeginner>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.orange.shade50,
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child:
-              isGameStarted
-                  ? Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (questionIndex < controller.questions.length)
-                        Column(
-                          children: [
-                            ScaleTransition(
-                              scale: Tween(begin: 0.5, end: 1.0).animate(
-                                CurvedAnimation(
-                                  parent: _animationController,
-                                  curve: Curves.elasticOut,
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/math_fon.jpg'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child:
+                isGameStarted
+                    ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (questionIndex < controller.questions.length)
+                          Column(
+                            children: [
+                              ScaleTransition(
+                                scale: Tween(begin: 0.5, end: 1.0).animate(
+                                  CurvedAnimation(
+                                    parent: _animationController,
+                                    curve: Curves.elasticOut,
+                                  ),
+                                ),
+                                child: Text(
+                                  controller.questions[questionIndex],
+                                  style: const TextStyle(
+                                    fontSize: 64,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
-                              child: Text(
-                                controller.questions[questionIndex],
+                              const SizedBox(height: 20),
+                              Text(
+                                '⏱ Vaqt: $questionCountdown',
                                 style: const TextStyle(
-                                  fontSize: 64,
-                                  fontWeight: FontWeight.bold,
+                                  fontSize: 24,
+                                  color: Colors.red,
                                 ),
                               ),
-                            ),
-                            const SizedBox(height: 20),
-                            Text(
-                              '⏱ Vaqt: $questionCountdown',
-                              style: const TextStyle(
-                                fontSize: 24,
-                                color: Colors.red,
+                            ],
+                          )
+                        else if (isAnswering)
+                          Column(
+                            children: [
+                              const Text(
+                                'Natijani kiriting:',
+                                style: TextStyle(fontSize: 24),
                               ),
-                            ),
-                          ],
-                        )
-                      else if (isAnswering)
-                        Column(
-                          children: [
-                            const Text(
-                              'Natijani kiriting:',
-                              style: TextStyle(fontSize: 24),
-                            ),
-                            const SizedBox(height: 10),
-                            TextField(
-                              controller: answerController,
-                              keyboardType: TextInputType.number,
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                hintText: 'Javobingiz',
+                              const SizedBox(height: 10),
+                              TextField(
+                                controller: answerController,
+                                keyboardType: TextInputType.number,
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  hintText: 'Javobingiz',
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 20),
-                            ElevatedButton(
-                              onPressed: checkAnswer,
-                              child: const Text('Tekshirish'),
-                            ),
-                          ],
+                              const SizedBox(height: 20),
+                              ElevatedButton(
+                                onPressed: checkAnswer,
+                                child: const Text('Tekshirish'),
+                              ),
+                            ],
+                          ),
+                      ],
+                    )
+                    : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "O'yin boshlanishiga qoldi:",
+                          style: TextStyle(fontSize: 24),
                         ),
-                    ],
-                  )
-                  : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        "O'yin boshlanishiga qoldi:",
-                        style: TextStyle(fontSize: 24),
-                      ),
-                      const SizedBox(height: 20),
-                      Text(
-                        '$countdown',
-                        style: const TextStyle(
-                          fontSize: 48,
-                          fontWeight: FontWeight.bold,
+                        const SizedBox(height: 20),
+                        Text(
+                          '$countdown',
+                          style: const TextStyle(
+                            fontSize: 48,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
+          ),
         ),
       ),
     );
