@@ -5,6 +5,7 @@ import 'package:imkon/features/cources/math_cource/pages/advanced_math_page.dart
 import 'package:imkon/features/cources/math_cource/pages/division_page.dart';
 import 'package:imkon/features/cources/math_cource/pages/math_game_beginner.dart';
 import 'package:imkon/features/cources/math_cource/pages/multiplication_page.dart';
+import 'package:imkon/features/cources/math_cource/pages/number_game_page.dart';
 
 class MathCourcePage extends StatelessWidget {
   const MathCourcePage({super.key});
@@ -124,6 +125,31 @@ class MathCourcePage extends StatelessWidget {
                 buttonColor: Color(0xFFB69CFF),
                 textColor: Color(0xFF000000).withValues(alpha: 0.7),
               ),
+            ),
+            CustomButton(
+              function: () {
+                showDialog(
+                  context: context,
+                  builder:
+                      (context) => AttentionDialog(
+                        function: () {
+                          Navigator.of(context).pop();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => GuessNumberGame(),
+                            ),
+                          );
+                        },
+                        text:
+                            'Komputer son o\'ylaydi va siz ularni tezkorlik bilan topishing kerak.\n\nO‘yin boshlaymizmi?',
+                      ),
+                );
+              },
+              text: "Son o'yini",
+              textSize: 24,
+              buttonColor: Colors.blue,
+              textColor: Color(0xFF000000),
             ),
           ],
         ),
