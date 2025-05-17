@@ -1,42 +1,28 @@
-import 'dart:math';
+class FixedMathGameController {
+  final List<List<String>> _questions = [
+    ['+3', '-1', '+5', '-2', '+1'],
+    ['+10', '-4', '+6', '-2', '+3'],
+    ['+20', '-5', '+10', '-4', '+2'], 
+  ];
 
-class MathGameController {
-  int difficulty;
-  List<String> questions = [];
-  List<int> answers = [];
+  final List<int> _answers = [6, 13, 23];
 
-  MathGameController({this.difficulty = 10});
+  int currentExampleIndex = 0;
+  List<String> get currentExample => _questions[currentExampleIndex];
+  int getCorrectAnswer() => _answers[currentExampleIndex];
 
-  void generateQuestions() {
-    questions.clear();
-    answers.clear();
-    Random random = Random();
-    int result = 0;
-
-    for (int i = 0; i < 5; i++) {
-      int value = random.nextInt(difficulty);
-      bool isPlus = i % 2 == 0;
-      int signedValue = isPlus ? value : -value;
-      questions.add("${isPlus ? '+' : '-'}$value");
-      answers.add(signedValue);
-      result += signedValue;
+  void nextExample() {
+    if (currentExampleIndex < _questions.length - 1) {
+      currentExampleIndex++;
     }
   }
 
-  int getCorrectAnswer() {
-    return answers.fold(0, (sum, val) => sum + val);
+  void reset() {
+    currentExampleIndex = 0;
   }
 
-  bool checkUserAnswer(String userInput) {
-    int userAnswer = int.tryParse(userInput.trim()) ?? 0;
+  bool checkUserAnswer(String input) {
+    int userAnswer = int.tryParse(input.trim()) ?? 0;
     return userAnswer == getCorrectAnswer();
-  }
-
-  void increaseDifficulty() {
-    difficulty = min(100, difficulty + 10);
-  }
-
-  void resetDifficulty() {
-    difficulty = 10;
   }
 }

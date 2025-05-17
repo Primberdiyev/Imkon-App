@@ -4,7 +4,7 @@ import 'package:imkon/features/courses/math_course/dialogs/attention_dialog.dart
 import 'package:imkon/features/courses/math_course/pages/advanced_math_page.dart';
 import 'package:imkon/features/courses/math_course/pages/division_page.dart';
 import 'package:imkon/features/courses/math_course/pages/math_game_beginner.dart';
-import 'package:imkon/features/courses/math_course/pages/multiplication_page.dart';
+import 'package:imkon/features/courses/math_course/pages/multiplication/multiplication_page.dart';
 import 'package:imkon/features/courses/math_course/pages/number_game_page.dart';
 
 class MathCoursePage extends StatelessWidget {
@@ -31,7 +31,7 @@ class MathCoursePage extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => MathGameBeginner(),
+                              builder: (_) => FixedMathGamePage(),
                             ),
                           );
                         },
@@ -55,12 +55,12 @@ class MathCoursePage extends StatelessWidget {
                         (context) => AttentionDialog(
                           function: () {
                             Navigator.of(context).pop();
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => MultiplicationGamePage(),
-                              ),
-                            );
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (_) => MultiplicationGamePage(),
+                            //   ),
+                            // );
                           },
                           text:
                               'Sizga random sonlar beriladi va siz ularni tezkorlik bilan kopaytirishingiz kerak.\n\nO‘yin boshlaymizmi?',
