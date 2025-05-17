@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:imkon/features/courses/math_course/pages/multiplication/bloc/multiplication_bloc.dart';
-import 'package:imkon/features/utils/app_images.dart';
+import 'package:imkon/features/courses/math_course/pages/multiplication/widgets/finished_game.dart';
+import 'package:imkon/features/courses/math_course/pages/multiplication/widgets/game_started.dart';
+import 'package:imkon/features/courses/math_course/pages/multiplication/widgets/second_to_game.dart';
 
 class MultiplicationPage extends StatefulWidget {
   const MultiplicationPage({super.key});
@@ -11,6 +13,8 @@ class MultiplicationPage extends StatefulWidget {
 }
 
 class _MultiplicationPageState extends State<MultiplicationPage> {
+  final TextEditingController _controller = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -18,43 +22,33 @@ class _MultiplicationPageState extends State<MultiplicationPage> {
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/images/math_fon.jpg'),
             fit: BoxFit.cover,
           ),
         ),
+        padding: const EdgeInsets.all(24),
         child: BlocBuilder<MultiplicationBloc, MultiplicationState>(
           builder: (context, state) {
             if (state is StartGameState) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'O\'yin boshlanishiga qoldi : ',
-                    style: TextStyle(fontSize: 32, color: Colors.black),
-                  ),
-                  Text(
-                    state.timer,
-                    style: TextStyle(fontSize: 40, color: Colors.black),
-                  ),
-                ],
-              );
+              return SecondToGame(state: state);
             } else if (state is GameStarted) {
-              return Center(
-                child: Text(
-                  'O\'yin boshlandi!',
-                  style: TextStyle(fontSize: 32, color: Colors.green),
-                ),
-              );
+              return GameStartedPage(state: state, controller: _controller);
+            } else if (state is GameFinished) {
+              return FinishedGame(state: state);
             }
-            return SizedBox();
+            return SizedBox.shrink();
           },
         ),
       ),
