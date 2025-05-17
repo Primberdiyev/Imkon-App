@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:imkon/core/ui_kit/custom_button.dart';
-import 'package:imkon/features/cources/math_cource/dialogs/attention_dialog.dart';
-import 'package:imkon/features/cources/math_cource/pages/advanced_math_page.dart';
-import 'package:imkon/features/cources/math_cource/pages/division_page.dart';
-import 'package:imkon/features/cources/math_cource/pages/math_game_beginner.dart';
-import 'package:imkon/features/cources/math_cource/pages/multiplication_page.dart';
-import 'package:imkon/features/cources/math_cource/pages/number_game_page.dart';
+import 'package:imkon/features/courses/math_course/dialogs/attention_dialog.dart';
+import 'package:imkon/features/courses/math_course/pages/advanced_math_page.dart';
+import 'package:imkon/features/courses/math_course/pages/division_page.dart';
+import 'package:imkon/features/courses/math_course/pages/math_game_beginner.dart';
+import 'package:imkon/features/courses/math_course/pages/multiplication_page.dart';
+import 'package:imkon/features/courses/math_course/pages/number_game_page.dart';
 
-class MathCourcePage extends StatelessWidget {
-  const MathCourcePage({super.key});
+class MathCoursePage extends StatelessWidget {
+  const MathCoursePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +146,7 @@ class MathCourcePage extends StatelessWidget {
                       ),
                 );
               },
-              text: "Son o'yini",
+              text: "Taxmin o'yini o'yini",
               textSize: 24,
               buttonColor: Colors.blue,
               textColor: Color(0xFF000000),

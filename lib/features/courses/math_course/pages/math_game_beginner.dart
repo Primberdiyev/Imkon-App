@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:imkon/features/cources/math_cource/methods/math_game_methods.dart';
+import 'package:imkon/features/courses/math_course/methods/math_game_methods.dart';
 
 class MathGameBeginner extends StatefulWidget {
   const MathGameBeginner({super.key});

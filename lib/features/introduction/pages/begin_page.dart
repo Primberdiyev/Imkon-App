@@ -9,6 +9,7 @@ class BeginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -30,10 +31,7 @@ class BeginPage extends StatelessWidget {
                 'Xalqaro darajadagi ta\'lim interaktiv usulda!',
                 maxLines: 2,
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.black.withValues(alpha: 0.4),
-                ),
+                style: TextStyle(fontSize: 20, color: Colors.green),
               ),
             ),
             Spacer(),

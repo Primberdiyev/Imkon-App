@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:imkon/features/cources/math_cource/pages/math_cource_page.dart';
+import 'package:imkon/features/courses/math_course/pages/math_course_page.dart';
 import 'package:imkon/features/home/widgets/course_card.dart';
 import 'package:imkon/features/utils/app_images.dart';
 
@@ -29,7 +29,7 @@ class Fields extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => MathCourcePage()),
+              MaterialPageRoute(builder: (context) => MathCoursePage()),
             );
           },
         ),
