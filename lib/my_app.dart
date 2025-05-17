@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:imkon/features/courses/math_course/pages/multiplication/bloc/multiplication_bloc.dart';
 import 'package:imkon/features/splash/splash_page.dart';
 
 class MyApp extends StatelessWidget {
@@ -6,6 +8,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: SplashPage(), debugShowCheckedModeBanner: false);
+    return MultiBlocProvider(
+      providers: [BlocProvider(create: (context) => MultiplicationBloc())],
+      child: MaterialApp(home: SplashPage(), debugShowCheckedModeBanner: false),
+    );
   }
 }

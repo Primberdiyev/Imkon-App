@@ -1,4 +1,6 @@
 part of 'multiplication_bloc.dart';
 
-@immutable
+
 abstract class MultiplicationEvent {}
+
+class StartGameEvent extends MultiplicationEvent {}

@@ -55,12 +55,12 @@ class MathCoursePage extends StatelessWidget {
                         (context) => AttentionDialog(
                           function: () {
                             Navigator.of(context).pop();
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (_) => MultiplicationGamePage(),
-                            //   ),
-                            // );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => MultiplicationPage(),
+                              ),
+                            );
                           },
                           text:
                               'Sizga random sonlar beriladi va siz ularni tezkorlik bilan kopaytirishingiz kerak.\n\nO‘yin boshlaymizmi?',

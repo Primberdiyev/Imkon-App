@@ -14,4 +14,5 @@ class AppImages {
   static const String blueFone = 'assets/images/blue_fon.jpg';
   static const String whiteFone = 'assets/images/white_fon.jpg';
   static const String tools = 'assets/images/tools.png';
+  static const String mathFon = 'assets/images/math_fon.jpg';
 }
