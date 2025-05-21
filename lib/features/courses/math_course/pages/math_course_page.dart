@@ -3,6 +3,7 @@ import 'package:imkon/core/ui_kit/custom_button.dart';
 import 'package:imkon/features/courses/math_course/dialogs/attention_dialog.dart';
 import 'package:imkon/features/courses/math_course/pages/advanced_math_page.dart';
 import 'package:imkon/features/courses/math_course/pages/division_page.dart';
+import 'package:imkon/features/courses/math_course/pages/logic_questions_page.dart';
 import 'package:imkon/features/courses/math_course/pages/math_game_beginner.dart';
 import 'package:imkon/features/courses/math_course/pages/multiplication/multiplication_page.dart';
 import 'package:imkon/features/courses/math_course/pages/number_game_page.dart';
@@ -14,7 +15,7 @@ class MathCoursePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(" Kerakli bo'limlardan birini tanlash", maxLines: 2),
+        title: Text(" Kerakli bo'limlardan birini tanlang", maxLines: 2),
       ),
       body: Center(
         child: Column(
@@ -36,7 +37,7 @@ class MathCoursePage extends StatelessWidget {
                           );
                         },
                         text:
-                            'Sizga random sonlar beriladi va siz ularni tezkorlik bilan hisoblashingiz kerak.\n\nO‘yin boshlaymizmi?',
+                            'Sizga tasodifiy sonlar beriladi va siz ularni tezkorlik bilan hisoblashingiz kerak.\n\nO‘yin boshlaymizmi?',
                       ),
                 );
               },
@@ -63,7 +64,7 @@ class MathCoursePage extends StatelessWidget {
                             );
                           },
                           text:
-                              'Sizga random sonlar beriladi va siz ularni tezkorlik bilan kopaytirishingiz kerak.\n\nO‘yin boshlaymizmi?',
+                              'Sizga tasodifiy sonlar beriladi va siz ularni tezkorlik bilan kopaytirishingiz kerak.\n\nO‘yin boshlaymizmi?',
                         ),
                   );
                 },
@@ -89,7 +90,7 @@ class MathCoursePage extends StatelessWidget {
                           );
                         },
                         text:
-                            'Sizga random sonlar beriladi va siz ularni tezkorlik bilan bo\'lishingiz kerak.\n\nO‘yin boshlaymizmi?',
+                            'Sizga tasodifiy sonlar beriladi va siz ularni tezkorlik bilan bo\'lishingiz kerak.\n\nO‘yin boshlaymizmi?',
                       ),
                 );
               },
@@ -116,7 +117,7 @@ class MathCoursePage extends StatelessWidget {
                             );
                           },
                           text:
-                              'Sizga random sonlar beriladi va siz ularni tezkorlik bilan kopaytirishingiz kerak.\n\nO‘yin boshlaymizmi?',
+                              'Sizga tasodifiy sonlar beriladi va siz ularni tezkorlik bilan kopaytirishingiz kerak.\n\nO‘yin boshlaymizmi?',
                         ),
                   );
                 },
@@ -149,6 +150,32 @@ class MathCoursePage extends StatelessWidget {
               text: "Taxmin o'yini o'yini",
               textSize: 24,
               buttonColor: Colors.blue,
+              textColor: Color(0xFF000000),
+            ),
+            SizedBox(height: 30),
+            CustomButton(
+              function: () {
+                showDialog(
+                  context: context,
+                  builder:
+                      (context) => AttentionDialog(
+                        function: () {
+                          Navigator.of(context).pop();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => LogicQuestionsPage(),
+                            ),
+                          );
+                        },
+                        text:
+                            'Sizga ketma ket mantiqiy savollar beriladi va siz ularni topishing kerak.\n\nO‘yin boshlaymizmi?',
+                      ),
+                );
+              },
+              text: "Mantiqiy savollar",
+              textSize: 24,
+              buttonColor: Colors.pink.withValues(alpha: 0.8),
               textColor: Color(0xFF000000),
             ),
           ],

@@ -192,8 +192,27 @@ class _MathGameAdvancedState extends State<MathGameAdvanced>
                             : !_isInitialQuestionsDone
                             ? _buildInitialStepByStepQuestions()
                             : Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Text('Keyingi bosqich yuklanmoqda...'),
+                                TextButton(
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: Colors.blue,
+                                    fixedSize: Size(200, 50),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(
+                                    'Bosh sahifa',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
                               ],
                             )
                         : _buildCountdown(),

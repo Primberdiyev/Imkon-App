@@ -72,7 +72,6 @@ class _FixedMathGamePageState extends State<FixedMathGamePage>
         });
       });
     } else {
-      // Barcha 5 amal chiqib bo‘ldi, endi javob kiritish oynasini ko‘rsatamiz
       isAnswering = true;
       setState(() {});
     }

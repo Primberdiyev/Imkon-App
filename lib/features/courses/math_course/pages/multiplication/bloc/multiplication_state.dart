@@ -15,7 +15,7 @@ class GameStarted extends MultiplicationState {
   final int currentQuestionIndex;
   final List<Map<String, dynamic>> questions;
   final String userAnswer;
-  final bool? isAnswerCorrect; // true, false yoki null (javob berilmagan)
+  final bool? isAnswerCorrect;
   final int correctCount;
 
   GameStarted({

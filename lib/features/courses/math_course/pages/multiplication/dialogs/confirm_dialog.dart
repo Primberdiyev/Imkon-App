@@ -20,7 +20,10 @@ class ConfirmExitDialog extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
             ),
           ),
-          onPressed: () => Navigator.of(context).pop(true),
+          onPressed: () {
+            Navigator.pop(context);
+            Navigator.pop(context);
+          },
           child: Text('Ha, chiqish'),
         ),
       ],
