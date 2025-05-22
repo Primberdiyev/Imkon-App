@@ -34,6 +34,15 @@ class BeginPage extends StatelessWidget {
                 style: TextStyle(fontSize: 20, color: Colors.green),
               ),
             ),
+            SizedBox(height: 100),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(AppImages.deaf, height: 100, width: 100),
+                SizedBox(width: 30),
+                Image.asset(AppImages.blind, height: 100, width: 100),
+              ],
+            ),
             Spacer(),
             CustomButton(
               function: () {

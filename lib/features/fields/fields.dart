@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:imkon/features/courses/math_course/pages/math_course_page.dart';
+import 'package:imkon/features/courses/mother_language/mother_language_page.dart';
 import 'package:imkon/features/home/widgets/course_card.dart';
 import 'package:imkon/features/utils/app_images.dart';
 
@@ -37,7 +38,12 @@ class Fields extends StatelessWidget {
           title: 'Intensiv Ona Tili Kursi',
           subtitle: "Ona tilini o'rganing va\nyangi yo'llarni kashf eting",
           color: const Color(0xFF9EFFFF),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MotherLanguagePage()),
+            );
+          },
         ),
         CourseCard(
           isInProgress: true,

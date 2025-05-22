@@ -30,7 +30,7 @@ class _MultiplicationPageState extends State<MultiplicationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(backgroundColor: Colors.blueAccent),
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(

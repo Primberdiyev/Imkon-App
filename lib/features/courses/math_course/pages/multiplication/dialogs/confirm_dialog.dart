@@ -24,7 +24,7 @@ class ConfirmExitDialog extends StatelessWidget {
             Navigator.pop(context);
             Navigator.pop(context);
           },
-          child: Text('Ha, chiqish'),
+          child: Text('Ha, chiqish', style: TextStyle(color: Colors.white)),
         ),
       ],
     );

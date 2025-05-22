@@ -29,7 +29,7 @@ class CustomNetworkItem extends StatelessWidget {
             color: isSelected ? Colors.purple : const Color(0xFFAAB0B7),
             width: 2,
           ),
-          color: isSelected ? Colors.purple.shade50 : Colors.white,
+          color: isSelected ? Color(0xFFFFD700) : Colors.white,
         ),
         child: Row(
           children: [
@@ -40,7 +40,7 @@ class CustomNetworkItem extends StatelessWidget {
               style: TextStyle(
                 fontSize: 20,
                 fontFamily: 'myFirstFont',
-                color: isSelected ? Colors.purple : Colors.black,
+                color: isSelected ? Colors.white : Colors.black,
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
               ),
               maxLines: 2,

@@ -15,4 +15,7 @@ class AppImages {
   static const String whiteFone = 'assets/images/white_fon.jpg';
   static const String tools = 'assets/images/tools.png';
   static const String mathFon = 'assets/images/math_fon.jpg';
+  static const String verify = 'assets/images/verify.png';
+  static const String deaf = 'assets/images/deaf.png';
+  static const String blind = 'assets/images/blind.png';
 }

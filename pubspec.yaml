@@ -34,6 +34,7 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.8
+  google_fonts: ^6.2.1
 
 dev_dependencies:
   hive_generator: ^2.0.1
@@ -64,6 +65,25 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/musics/
+    - assets/images/characters/
+    - assets/images/unli/
+    - assets/images/undosh/
+    - assets/images/family/
+    - assets/images/school/
+    - assets/images/social/
+    - assets/images/animals/
+    - assets/images/nature/
+    - assets/images/sports/
+
+
+
+
+
+
+
+
+
+    
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

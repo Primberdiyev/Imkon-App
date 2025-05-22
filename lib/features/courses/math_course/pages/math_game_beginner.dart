@@ -112,7 +112,12 @@ class _FixedMathGamePageState extends State<FixedMathGamePage>
                     child: const Text('Bosh Sahifa'),
                   ),
                   TextButton(
-                    style: TextButton.styleFrom(backgroundColor: Colors.green),
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
                     onPressed: () {
                       Navigator.of(ctx).pop();
                       controller.nextExample();
@@ -157,88 +162,110 @@ class _FixedMathGamePageState extends State<FixedMathGamePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.orange.shade50,
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child:
-                  isGameStarted
-                      ? Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          if (!isAnswering)
-                            Column(
-                              children: [
-                                ScaleTransition(
-                                  scale: Tween(begin: 0.5, end: 1.0).animate(
-                                    CurvedAnimation(
-                                      parent: _animationController,
-                                      curve: Curves.elasticOut,
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/math_fon.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child:
+                    isGameStarted
+                        ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            if (!isAnswering)
+                              Column(
+                                children: [
+                                  ScaleTransition(
+                                    scale: Tween(begin: 0.5, end: 1.0).animate(
+                                      CurvedAnimation(
+                                        parent: _animationController,
+                                        curve: Curves.elasticOut,
+                                      ),
+                                    ),
+                                    child: Text(
+                                      controller.currentExample[questionIndex %
+                                          controller.currentExample.length],
+                                      style: const TextStyle(
+                                        fontSize: 64,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
-                                  child: Text(
-                                    controller.currentExample[questionIndex %
-                                        controller.currentExample.length],
+                                  const SizedBox(height: 20),
+                                  Text(
+                                    '⏱ Vaqt: $questionCountdown',
                                     style: const TextStyle(
-                                      fontSize: 64,
-                                      fontWeight: FontWeight.bold,
+                                      fontSize: 24,
+                                      color: Colors.red,
                                     ),
                                   ),
-                                ),
-                                const SizedBox(height: 20),
-                                Text(
-                                  '⏱ Vaqt: $questionCountdown',
-                                  style: const TextStyle(
-                                    fontSize: 24,
-                                    color: Colors.red,
+                                ],
+                              )
+                            else
+                              Column(
+                                children: [
+                                  const Text(
+                                    'Natijani kiriting:',
+                                    style: TextStyle(fontSize: 24),
                                   ),
-                                ),
-                              ],
-                            )
-                          else
-                            Column(
-                              children: [
-                                const Text(
-                                  'Natijani kiriting:',
-                                  style: TextStyle(fontSize: 24),
-                                ),
-                                const SizedBox(height: 10),
-                                TextField(
-                                  controller: answerController,
-                                  keyboardType: TextInputType.number,
-                                  decoration: const InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    hintText: 'Javobingiz',
+                                  const SizedBox(height: 10),
+                                  TextField(
+                                    controller: answerController,
+                                    keyboardType: TextInputType.number,
+                                    decoration: const InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      hintText: 'Javobingiz',
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 20),
-                                ElevatedButton(
-                                  onPressed: checkAnswer,
-                                  child: const Text('Tekshirish'),
-                                ),
-                              ],
+                                  const SizedBox(height: 20),
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.blue,
+                                      fixedSize: Size(120, 60),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                    onPressed: checkAnswer,
+                                    child: const Text(
+                                      'Tekshirish',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                          ],
+                        )
+                        : Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              "O'yin boshlanishiga qoldi:",
+                              style: TextStyle(fontSize: 24),
                             ),
-                        ],
-                      )
-                      : Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "O'yin boshlanishiga qoldi:",
-                            style: TextStyle(fontSize: 24),
-                          ),
-                          const SizedBox(height: 20),
-                          Text(
-                            '$countdown',
-                            style: const TextStyle(
-                              fontSize: 48,
-                              fontWeight: FontWeight.bold,
+                            const SizedBox(height: 20),
+                            Text(
+                              '$countdown',
+                              style: const TextStyle(
+                                fontSize: 48,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
+                          ],
+                        ),
+              ),
             ),
           ),
           Positioned(top: 60, left: 10, child: BackButton(color: Colors.black)),

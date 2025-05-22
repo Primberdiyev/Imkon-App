@@ -194,6 +194,30 @@ class _MathGameAdvancedState extends State<MathGameAdvanced>
                             : Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
+                                const Text(
+                                  'O‘yin tugadi!',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                Text(
+                                  'To‘g‘ri javoblar: $_score',
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.green,
+                                  ),
+                                ),
+                                SizedBox(height: 20),
+                                Text(
+                                  'Notog‘ri javoblar: ${_correctAnswers.length - _score}',
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                                const SizedBox(height: 30),
                                 TextButton(
                                   style: TextButton.styleFrom(
                                     backgroundColor: Colors.blue,
