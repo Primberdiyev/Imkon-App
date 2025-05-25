@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:imkon/core/ui_kit/custom_button.dart';
 import 'package:imkon/features/courses/math_course/dialogs/attention_dialog.dart';
@@ -8,14 +9,31 @@ import 'package:imkon/features/courses/math_course/pages/math_game_beginner.dart
 import 'package:imkon/features/courses/math_course/pages/multiplication/multiplication_page.dart';
 import 'package:imkon/features/courses/math_course/pages/number_game_page.dart';
 
-class MathCoursePage extends StatelessWidget {
+class MathCoursePage extends StatefulWidget {
   const MathCoursePage({super.key});
+
+  @override
+  State<MathCoursePage> createState() => _MathCoursePageState();
+}
+
+class _MathCoursePageState extends State<MathCoursePage> {
+  final AudioPlayer audioPlayer = AudioPlayer();
+
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+    super.dispose();
+  }
+
+  void _playDialogSound(String pathToMusic) async {
+    await audioPlayer.play(AssetSource(pathToMusic));
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(" Kerakli bo'limlardan birini tanlang", maxLines: 2),
+        title: Text("Kerakli bo'limlardan birini tanlang", maxLines: 2),
       ),
       body: Center(
         child: Column(
@@ -23,10 +41,12 @@ class MathCoursePage extends StatelessWidget {
             SizedBox(height: 100),
             CustomButton(
               function: () {
+                _playDialogSound('musics/attention_qoshish.mp3');
                 showDialog(
                   context: context,
                   builder:
                       (context) => AttentionDialog(
+                        audioPlayer: audioPlayer,
                         function: () {
                           Navigator.of(context).pop();
                           Navigator.push(
@@ -37,7 +57,8 @@ class MathCoursePage extends StatelessWidget {
                           );
                         },
                         text:
-                            'Sizga tasodifiy sonlar beriladi va siz ularni tezkorlik bilan hisoblashingiz kerak.\n\nO‘yin boshlaymizmi?',
+                            'Sizga tasodifiy sonlar beriladi va siz ularni tezkorlik bilan hisoblashingiz kerak.\n\nO‘yinni boshlaymizmi?',
+                        startSound: 'musics/diqqat_boshlanmoqda.mp3',
                       ),
                 );
               },
@@ -50,10 +71,14 @@ class MathCoursePage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 30),
               child: CustomButton(
                 function: () {
+                  _playDialogSound('musics/attention_kopaytirish.mp3');
+
                   showDialog(
                     context: context,
                     builder:
                         (context) => AttentionDialog(
+                          audioPlayer: audioPlayer,
+                          startSound: 'musics/diqqat_boshlanmoqda.mp3',
                           function: () {
                             Navigator.of(context).pop();
                             Navigator.push(
@@ -64,7 +89,7 @@ class MathCoursePage extends StatelessWidget {
                             );
                           },
                           text:
-                              'Sizga tasodifiy sonlar beriladi va siz ularni tezkorlik bilan kopaytirishingiz kerak.\n\nO‘yin boshlaymizmi?',
+                              'Sizga tasodifiy sonlar beriladi va siz ularni tezkorlik bilan kopaytirishingiz kerak.\n\nO‘yinni boshlaymizmi?',
                         ),
                   );
                 },
@@ -90,7 +115,7 @@ class MathCoursePage extends StatelessWidget {
                           );
                         },
                         text:
-                            'Sizga tasodifiy sonlar beriladi va siz ularni tezkorlik bilan bo\'lishingiz kerak.\n\nO‘yin boshlaymizmi?',
+                            'Sizga tasodifiy sonlar beriladi va siz ularni tezkorlik bilan bo\'lishingiz kerak.\n\nO‘yinni boshlaymizmi?',
                       ),
                 );
               },
@@ -117,7 +142,7 @@ class MathCoursePage extends StatelessWidget {
                             );
                           },
                           text:
-                              'Sizga tasodifiy sonlar beriladi va siz ularni tezkorlik bilan kopaytirishingiz kerak.\n\nO‘yin boshlaymizmi?',
+                              'Sizga tasodifiy sonlar beriladi va siz ularni tezkorlik bilan kopaytirishingiz kerak.\n\nO‘yinni boshlaymizmi?',
                         ),
                   );
                 },
@@ -143,7 +168,7 @@ class MathCoursePage extends StatelessWidget {
                           );
                         },
                         text:
-                            'Komputer son o\'ylaydi va siz ularni tezkorlik bilan topishing kerak.\n\nO‘yin boshlaymizmi?',
+                            'Komputer son o\'ylaydi va siz ularni tezkorlik bilan topishing kerak.\n\nO‘yinni boshlaymizmi?',
                       ),
                 );
               },
@@ -169,7 +194,7 @@ class MathCoursePage extends StatelessWidget {
                           );
                         },
                         text:
-                            'Sizga ketma ket mantiqiy savollar beriladi va siz ularni topishing kerak.\n\nO‘yin boshlaymizmi?',
+                            'Sizga ketma ket mantiqiy savollar beriladi va siz ularni topishing kerak.\n\nO‘yinni boshlaymizmi?',
                       ),
                 );
               },

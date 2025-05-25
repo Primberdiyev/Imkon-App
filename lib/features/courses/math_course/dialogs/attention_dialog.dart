@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class AttentionDialog extends StatelessWidget {
   const AttentionDialog({
     super.key,
     required this.text,
     required this.function,
+    this.startSound,
+    this.audioPlayer,
   });
+
   final String text;
   final Function() function;
-
+  final String? startSound;
+  final AudioPlayer? audioPlayer;
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -22,12 +27,25 @@ class AttentionDialog extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () {
+                Navigator.of(context).pop();
+                if (audioPlayer != null) {
+                  audioPlayer?.stop();
+                }
+              },
               child: Text('Bekor qilish'),
             ),
             TextButton(
-              onPressed: function,
-
+              onPressed: () async {
+                if (startSound != null) {
+                  final audioPlayer = AudioPlayer();
+                  await audioPlayer.play(AssetSource(startSound ?? ""));
+                }
+                if (audioPlayer != null) {
+                  audioPlayer?.stop();
+                }
+                function();
+              },
               style: TextButton.styleFrom(
                 backgroundColor: Colors.green,
                 shape: RoundedRectangleBorder(

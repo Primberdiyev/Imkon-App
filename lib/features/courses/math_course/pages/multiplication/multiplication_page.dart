@@ -1,6 +1,7 @@
+// MultiplicationPage.dart
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:imkon/features/courses/math_course/pages/multiplication/bloc/multiplication_bloc.dart';
+import 'package:provider/provider.dart';
+import 'package:imkon/features/courses/math_course/pages/multiplication/providers/multiplication_provider.dart';
 import 'package:imkon/features/courses/math_course/pages/multiplication/widgets/finished_game.dart';
 import 'package:imkon/features/courses/math_course/pages/multiplication/widgets/game_started.dart';
 import 'package:imkon/features/courses/math_course/pages/multiplication/widgets/second_to_game.dart';
@@ -18,7 +19,16 @@ class _MultiplicationPageState extends State<MultiplicationPage> {
   @override
   void initState() {
     super.initState();
-    context.read<MultiplicationBloc>().add(StartGameEvent());
+    Future.delayed(Duration.zero, () {
+      final provider = Provider.of<MultiplicationProvider>(
+        context,
+        listen: false,
+      );
+      provider.resetGame();
+      Future.delayed(Duration.zero, () {
+        provider.startCountdown(context);
+      });
+    });
   }
 
   @override
@@ -29,6 +39,8 @@ class _MultiplicationPageState extends State<MultiplicationPage> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<MultiplicationProvider>(context);
+
     return Scaffold(
       appBar: AppBar(backgroundColor: Colors.blueAccent),
       body: Container(
@@ -39,19 +51,23 @@ class _MultiplicationPageState extends State<MultiplicationPage> {
           ),
         ),
         padding: const EdgeInsets.all(24),
-        child: BlocBuilder<MultiplicationBloc, MultiplicationState>(
-          builder: (context, state) {
-            if (state is StartGameState) {
-              return SecondToGame(state: state);
-            } else if (state is GameStarted) {
-              return GameStartedPage(state: state, controller: _controller);
-            } else if (state is GameFinished) {
-              return FinishedGame(state: state);
-            }
-            return SizedBox.shrink();
-          },
-        ),
+        child: _buildContent(provider),
       ),
     );
+  }
+
+  Widget _buildContent(MultiplicationProvider provider) {
+    if (!provider.isGameStarted) {
+      return SecondToGame();
+    } else if (provider.isGameFinished) {
+      return FinishedGame();
+    } else {
+      return GameStartedPage(
+        question: provider.currentQuestion,
+        isAnswerChecked: provider.isAnswerChecked,
+        isAnswerCorrect: provider.isAnswerCorrect,
+        controller: _controller,
+      );
+    }
   }
 }

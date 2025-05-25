@@ -15,6 +15,7 @@ class _FixedMathGamePageState extends State<FixedMathGamePage>
   final AudioPlayer _audioPlayer = AudioPlayer();
   int countdown = 5;
   int questionIndex = 0;
+  int currentNumberIndex = 0;
   int questionCountdown = 5;
   Timer? countdownTimer;
   Timer? questionTimer;
@@ -23,6 +24,7 @@ class _FixedMathGamePageState extends State<FixedMathGamePage>
   TextEditingController answerController = TextEditingController();
   late FixedMathGameController controller;
   late AnimationController _animationController;
+  String currentDisplayNumber = '';
 
   @override
   void initState() {
@@ -48,32 +50,63 @@ class _FixedMathGamePageState extends State<FixedMathGamePage>
     });
   }
 
+  Future<void> _playNumberSound(String number) async {
+    await _audioPlayer.play(AssetSource('musics/$number.mp3'));
+  }
+
   void startGame() {
-    isGameStarted = true;
+    setState(() {
+      isGameStarted = true;
+      currentNumberIndex = 0;
+      questionCountdown = 5; // Reset countdown
+    });
     showNextQuestion();
   }
 
-  void showNextQuestion() {
+  void showNextQuestion() async {
     final questions = controller.currentExample;
 
     if (questionIndex < questions.length) {
-      questionCountdown = 5;
       _animationController.forward(from: 0);
 
-      questionTimer?.cancel();
-      questionTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-        setState(() {
-          questionCountdown--;
-          if (questionCountdown == 0) {
-            timer.cancel();
-            questionIndex++;
-            showNextQuestion();
-          }
+      // Show and play each number one by one with 5 second interval
+      for (var i = 0; i < questions.length; i++) {
+        // Start countdown timer for each number
+        questionCountdown = 5;
+        questionTimer?.cancel();
+        questionTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+          setState(() {
+            if (questionCountdown > 0) {
+              questionCountdown--;
+            } else {
+              timer.cancel();
+            }
+          });
         });
+
+        setState(() {
+          currentDisplayNumber = questions[i];
+          currentNumberIndex = i;
+        });
+
+        // Play the number sound
+        await _playNumberSound(
+          questions[i].replaceAll('+', '').replaceAll('-', '-'),
+        );
+
+        // Wait for 5 seconds before showing next number
+        await Future.delayed(const Duration(seconds: 5));
+      }
+
+      // After all numbers are shown, start the answer phase
+      questionTimer?.cancel();
+      setState(() {
+        currentDisplayNumber = '';
+        isAnswering = true;
       });
-    } else {
-      isAnswering = true;
-      setState(() {});
+
+      // Play "answer now" sound
+      await _audioPlayer.play(AssetSource('musics/javob_ayting.mp3'));
     }
   }
 
@@ -82,6 +115,11 @@ class _FixedMathGamePageState extends State<FixedMathGamePage>
     bool isCorrect = controller.checkUserAnswer(answerController.text);
     int correct = controller.getCorrectAnswer();
     int userAnswer = int.tryParse(answerController.text.trim()) ?? 0;
+
+    // Play correct/incorrect sound
+    await _audioPlayer.play(
+      AssetSource(isCorrect ? 'musics/togri.mp3' : 'musics/notogri.mp3'),
+    );
 
     showDialog(
       context: context,
@@ -133,19 +171,20 @@ class _FixedMathGamePageState extends State<FixedMathGamePage>
             ],
           ),
     );
-    if (isCorrect) {
-      await _audioPlayer.play(AssetSource('musics/success1.mp3'));
-    }
   }
 
   void restartGame() {
     setState(() {
       countdown = 5;
       questionIndex = 0;
+      currentNumberIndex = 0;
+      currentDisplayNumber = '';
       answerController.clear();
       isGameStarted = false;
       isAnswering = false;
+      questionCountdown = 5;
     });
+    questionTimer?.cancel();
     startCountdown();
   }
 
@@ -191,8 +230,7 @@ class _FixedMathGamePageState extends State<FixedMathGamePage>
                                       ),
                                     ),
                                     child: Text(
-                                      controller.currentExample[questionIndex %
-                                          controller.currentExample.length],
+                                      currentDisplayNumber,
                                       style: const TextStyle(
                                         fontSize: 64,
                                         fontWeight: FontWeight.bold,
@@ -200,6 +238,14 @@ class _FixedMathGamePageState extends State<FixedMathGamePage>
                                     ),
                                   ),
                                   const SizedBox(height: 20),
+                                  Text(
+                                    '${currentNumberIndex + 1}/${controller.currentExample.length}',
+                                    style: const TextStyle(
+                                      fontSize: 24,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
                                   Text(
                                     '⏱ Vaqt: $questionCountdown',
                                     style: const TextStyle(

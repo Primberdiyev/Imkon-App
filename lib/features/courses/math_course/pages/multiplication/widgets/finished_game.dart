@@ -1,28 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:imkon/features/courses/math_course/pages/multiplication/bloc/multiplication_bloc.dart';
+import 'package:provider/provider.dart';
+import 'package:imkon/features/courses/math_course/pages/multiplication/providers/multiplication_provider.dart';
 import 'package:imkon/features/courses/math_course/pages/multiplication/dialogs/confirm_dialog.dart';
 
-class FinishedGame extends StatefulWidget {
-  const FinishedGame({super.key, required this.state});
-  final GameFinished state;
-
-  @override
-  State<FinishedGame> createState() => _FinishedGameState();
-}
-
-class _FinishedGameState extends State<FinishedGame> {
-  void _onExitPressed() async {
-    final exit = await showDialog<bool>(
-      context: context,
-      builder: (_) => ConfirmExitDialog(),
-    );
-    if (exit ?? false) {
-      Navigator.of(context).pop();
-    }
-  }
+class FinishedGame extends StatelessWidget {
+  const FinishedGame({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<MultiplicationProvider>(context);
+    final correctCount = provider.correctCount;
+    final totalQuestions = provider.questions.length;
+
+    void _onExitPressed() async {
+      final exit = await showDialog<bool>(
+        context: context,
+        builder: (_) => ConfirmExitDialog(),
+      );
+      if (exit ?? false) {
+        Navigator.of(context).pop();
+      }
+    }
+
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -44,7 +43,7 @@ class _FinishedGameState extends State<FinishedGame> {
           ),
           SizedBox(height: 20),
           Text(
-            'To‘g‘ri javoblar: ${widget.state.correctCount} / ${widget.state.totalQuestions}',
+            'To‘g‘ri javoblar: $correctCount / $totalQuestions',
             style: TextStyle(fontSize: 26, color: Colors.blue),
           ),
           SizedBox(height: 30),

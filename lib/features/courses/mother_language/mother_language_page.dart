@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:imkon/core/ui_kit/custom_button.dart';
-import 'package:imkon/features/courses/math_course/dialogs/attention_dialog.dart';
-import 'package:imkon/features/courses/math_course/pages/math_game_beginner.dart';
 import 'package:imkon/features/courses/mother_language/courses/characters/characters_page.dart';
 import 'package:imkon/features/courses/mother_language/courses/themes/theme_page.dart';
 import 'package:imkon/features/courses/mother_language/courses/words/words_page.dart';

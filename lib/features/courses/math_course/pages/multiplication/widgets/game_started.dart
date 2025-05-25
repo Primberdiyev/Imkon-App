@@ -1,38 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:imkon/features/courses/math_course/pages/multiplication/bloc/multiplication_bloc.dart';
+import 'package:provider/provider.dart';
+import 'package:imkon/features/courses/math_course/pages/multiplication/providers/multiplication_provider.dart';
 
-class GameStartedPage extends StatefulWidget {
+class GameStartedPage extends StatelessWidget {
   const GameStartedPage({
     super.key,
-    required this.state,
+    required this.question,
+    required this.isAnswerChecked,
+    required this.isAnswerCorrect,
     required this.controller,
   });
-  final GameStarted state;
+
+  final String question;
+  final bool isAnswerChecked;
+  final bool? isAnswerCorrect;
   final TextEditingController controller;
 
   @override
-  State<GameStartedPage> createState() => _GameStartedPageState();
-}
-
-class _GameStartedPageState extends State<GameStartedPage> {
-  void _submitAnswer() {
-    final answer = widget.controller.text;
-    if (answer.isNotEmpty) {
-      context.read<MultiplicationBloc>().add(AnswerSubmittedEvent(answer));
-    }
-  }
-
-  void _nextQuestion() {
-    widget.controller.clear();
-    context.read<MultiplicationBloc>().add(NextQuestionEvent());
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final question =
-        widget.state.questions[widget.state.currentQuestionIndex]['question'];
-    final isCorrect = widget.state.isAnswerCorrect;
+    final provider = Provider.of<MultiplicationProvider>(
+      context,
+      listen: false,
+    );
+
+    void _submitAnswer() {
+      if (controller.text.isNotEmpty) {
+        provider.updateAnswer(controller.text);
+        provider.checkAnswer(context);
+        controller.clear();
+      }
+    }
+
+    void _nextQuestion() {
+      provider.nextQuestion(context);
+    }
+
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -54,7 +56,7 @@ class _GameStartedPageState extends State<GameStartedPage> {
           ),
           const SizedBox(height: 20),
           TextField(
-            controller: widget.controller,
+            controller: controller,
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
               hintText: 'Javobni kiriting',
@@ -66,43 +68,37 @@ class _GameStartedPageState extends State<GameStartedPage> {
             ),
           ),
           const SizedBox(height: 30),
-          TextButton(
-            onPressed: (isCorrect == null) ? _submitAnswer : null,
-            style: TextButton.styleFrom(
-              backgroundColor: (isCorrect == null) ? Colors.blue : Colors.grey,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+          if (!isAnswerChecked)
+            TextButton(
+              onPressed: _submitAnswer,
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.blue,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
               ),
-              padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-            ),
-            child: const Text(
-              'Tekshirish',
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.white,
-                fontFamily: 'myFirstFont',
+              child: const Text(
+                'Tekshirish',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                  fontFamily: 'myFirstFont',
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 10),
-          if (isCorrect != null)
+          if (isAnswerChecked) ...[
             Text(
-              isCorrect ? 'Barakalla!' : 'Xato!',
+              isAnswerCorrect!
+                  ? '✅ Tabriklaymiz!, Sizning javobingiz To\'g\'ri'
+                  : 'Afsuski sizning javobingiz notog\'ri',
               style: TextStyle(
-                color: isCorrect ? Colors.greenAccent : Colors.redAccent,
-                fontSize: 22,
+                color: isAnswerCorrect! ? Color(0xFF1BAC4B) : Colors.redAccent,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
-                shadows: [
-                  Shadow(
-                    blurRadius: 1,
-                    color: Colors.black54,
-                    offset: Offset(1, 0),
-                  ),
-                ],
               ),
             ),
-          const SizedBox(height: 20),
-          if (isCorrect != null)
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _nextQuestion,
               style: ElevatedButton.styleFrom(
@@ -116,8 +112,7 @@ class _GameStartedPageState extends State<GameStartedPage> {
                 shadowColor: Colors.black,
               ),
               child: Text(
-                widget.state.currentQuestionIndex ==
-                        widget.state.questions.length - 1
+                provider.currentQuestionIndex == provider.questions.length - 1
                     ? 'Natijani ko‘rish'
                     : 'Keyingi',
                 style: TextStyle(
@@ -126,6 +121,7 @@ class _GameStartedPageState extends State<GameStartedPage> {
                 ),
               ),
             ),
+          ],
         ],
       ),
     );

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-// import statements...
 
 class DivisionGamePage extends StatefulWidget {
   const DivisionGamePage({super.key});
@@ -133,6 +132,7 @@ class _DivisionGamePageState extends State<DivisionGamePage> {
             title: const Center(child: Text("O'yin tugadi!")),
             content: Column(
               mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   "Siz ${questions.length} ta savoldan $score tasini topdingiz.",
@@ -141,42 +141,46 @@ class _DivisionGamePageState extends State<DivisionGamePage> {
               ],
             ),
             actions: [
-              TextButton(
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.amber,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+              Row(
+                children: [
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.amber,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      "Bosh sahifa",
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                },
-                child: const Text(
-                  "Bosh sahifa",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              const SizedBox(width: 30),
-              TextButton(
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+                  const SizedBox(width: 30),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      if (currentLevel == 1) {
+                        currentLevel = 2;
+                      }
+                      startPreCountdown();
+                    },
+                    child: Text(
+                      currentLevel == 1 ? "Keyingi bosqich" : "Yana o'ynash",
+                      style: const TextStyle(color: Colors.white),
+                    ),
                   ),
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                  if (currentLevel == 1) {
-                    currentLevel = 2;
-                  }
-                  startPreCountdown();
-                },
-                child: Text(
-                  currentLevel == 1 ? "Keyingi bosqich" : "Yana o'ynash",
-                  style: const TextStyle(color: Colors.white),
-                ),
+                ],
               ),
             ],
           ),

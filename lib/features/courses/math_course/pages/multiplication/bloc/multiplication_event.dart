@@ -1,14 +1,14 @@
-part of 'multiplication_bloc.dart';
+// part of 'multiplication_bloc.dart';
 
-@immutable
-abstract class MultiplicationEvent {}
+// @immutable
+// abstract class MultiplicationEvent {}
 
-class StartGameEvent extends MultiplicationEvent {}
+// class StartGameEvent extends MultiplicationEvent {}
 
-class AnswerSubmittedEvent extends MultiplicationEvent {
-  final String answer;
+// class AnswerSubmittedEvent extends MultiplicationEvent {
+//   final String answer;
 
-  AnswerSubmittedEvent(this.answer);
-}
+//   AnswerSubmittedEvent(this.answer);
+// }
 
-class NextQuestionEvent extends MultiplicationEvent {}
+// class NextQuestionEvent extends MultiplicationEvent {}
