@@ -26,7 +26,6 @@ class _FixedMathGamePageState extends State<FixedMathGamePage>
   late AnimationController _animationController;
   String currentDisplayNumber = '';
 
-  @override
   void initState() {
     super.initState();
     controller = FixedMathGameController();
@@ -58,7 +57,7 @@ class _FixedMathGamePageState extends State<FixedMathGamePage>
     setState(() {
       isGameStarted = true;
       currentNumberIndex = 0;
-      questionCountdown = 5; // Reset countdown
+      questionCountdown = 5;
     });
     showNextQuestion();
   }
@@ -69,12 +68,12 @@ class _FixedMathGamePageState extends State<FixedMathGamePage>
     if (questionIndex < questions.length) {
       _animationController.forward(from: 0);
 
-      // Show and play each number one by one with 5 second interval
       for (var i = 0; i < questions.length; i++) {
-        // Start countdown timer for each number
         questionCountdown = 5;
         questionTimer?.cancel();
+
         questionTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+          if (!mounted) return;
           setState(() {
             if (questionCountdown > 0) {
               questionCountdown--;
@@ -84,28 +83,27 @@ class _FixedMathGamePageState extends State<FixedMathGamePage>
           });
         });
 
+        if (!mounted) return;
         setState(() {
           currentDisplayNumber = questions[i];
           currentNumberIndex = i;
         });
 
-        // Play the number sound
         await _playNumberSound(
           questions[i].replaceAll('+', '').replaceAll('-', '-'),
         );
 
-        // Wait for 5 seconds before showing next number
         await Future.delayed(const Duration(seconds: 5));
+        if (!mounted) return;
       }
 
-      // After all numbers are shown, start the answer phase
       questionTimer?.cancel();
+      if (!mounted) return;
       setState(() {
         currentDisplayNumber = '';
         isAnswering = true;
       });
 
-      // Play "answer now" sound
       await _audioPlayer.play(AssetSource('musics/javob_ayting.mp3'));
     }
   }

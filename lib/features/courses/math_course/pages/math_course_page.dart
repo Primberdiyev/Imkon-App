@@ -192,10 +192,15 @@ class _MathCoursePageState extends State<MathCoursePage> {
             SizedBox(height: 30),
             CustomButton(
               function: () {
+                _playDialogSound('musics/attention_logic.mp3');
+
                 showDialog(
                   context: context,
                   builder:
                       (context) => AttentionDialog(
+                        audioPlayer: audioPlayer,
+                        startSound: 'musics/diqqat_boshlanmoqda.mp3',
+
                         function: () {
                           Navigator.of(context).pop();
                           Navigator.push(
