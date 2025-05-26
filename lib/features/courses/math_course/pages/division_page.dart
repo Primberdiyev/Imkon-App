@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-
+import 'package:audioplayers/audioplayers.dart';
 
 class DivisionGamePage extends StatefulWidget {
   const DivisionGamePage({super.key});
@@ -15,6 +15,7 @@ class _DivisionGamePageState extends State<DivisionGamePage> {
   Timer? timer;
   Timer? questionTimer;
   final TextEditingController controller = TextEditingController();
+  final AudioPlayer audioPlayer = AudioPlayer();
 
   int currentLevel = 1;
   int currentQuestion = 0;
@@ -25,19 +26,19 @@ class _DivisionGamePageState extends State<DivisionGamePage> {
   bool buttonPressed = false;
 
   final List<Map<String, dynamic>> level1Questions = [
-    {'a': 60, 'b': 2, 'answer': 30},
-    {'a': 80, 'b': 4, 'answer': 20},
-    {'a': 100, 'b': 5, 'answer': 20},
-    {'a': 30, 'b': 1, 'answer': 30},
-    {'a': 80, 'b': 5, 'answer': 16},
+    {'a': 60, 'b': 2, 'answer': 30, 'music': 'musics/div0.mp3'},
+    {'a': 80, 'b': 4, 'answer': 20, 'music': 'musics/div1.mp3'},
+    {'a': 100, 'b': 5, 'answer': 20, 'music': 'musics/div2.mp3'},
+    {'a': 30, 'b': 1, 'answer': 30, 'music': 'musics/div3.mp3'},
+    {'a': 80, 'b': 5, 'answer': 16, 'music': 'musics/div4.mp3'},
   ];
 
   final List<Map<String, dynamic>> level2Questions = [
-    {'a': 36, 'b': 3, 'answer': 12},
-    {'a': 28, 'b': 14, 'answer': 2},
-    {'a': 45, 'b': 5, 'answer': 9},
-    {'a': 40, 'b': 8, 'answer': 5},
-    {'a': 15, 'b': 15, 'answer': 1},
+    {'a': 36, 'b': 3, 'answer': 12, 'music': 'musics/div5.mp3'},
+    {'a': 28, 'b': 14, 'answer': 2, 'music': 'musics/div6.mp3'},
+    {'a': 45, 'b': 5, 'answer': 9, 'music': 'musics/div7.mp3'},
+    {'a': 40, 'b': 8, 'answer': 5, 'music': 'musics/div8.mp3'},
+    {'a': 15, 'b': 15, 'answer': 1, 'music': 'musics/div9.mp3'},
   ];
 
   List<Map<String, dynamic>> get questions =>
@@ -46,10 +47,27 @@ class _DivisionGamePageState extends State<DivisionGamePage> {
   @override
   void initState() {
     super.initState();
-    startPreCountdown();
+    startPreCountdown(false);
   }
 
-  void startPreCountdown() {
+  Future<void> playQuestionAudio() async {
+    try {
+      await audioPlayer.stop();
+      await audioPlayer.play(AssetSource(questions[currentQuestion]['music']));
+    } catch (e) {
+      print("Audio o'ynatishda xato: $e");
+    }
+  }
+
+  Future<void> playCorrectSound() async {
+    await audioPlayer.play(AssetSource('musics/togri.mp3'));
+  }
+
+  Future<void> playWrongSound() async {
+    await audioPlayer.play(AssetSource('musics/notogri.mp3'));
+  }
+
+  void startPreCountdown(bool condition) {
     setState(() {
       preCountdown = 5;
       showInput = false;
@@ -68,6 +86,7 @@ class _DivisionGamePageState extends State<DivisionGamePage> {
           setState(() {
             showInput = true;
           });
+          playQuestionAudio();
 
           if (currentLevel == 2) {
             startQuestionTimer();
@@ -75,6 +94,9 @@ class _DivisionGamePageState extends State<DivisionGamePage> {
         }
       });
     });
+    if (condition) {
+      audioPlayer.play(AssetSource('musics/diqqat_boshlanmoqda.mp3'));
+    }
   }
 
   void startQuestionTimer() {
@@ -92,7 +114,7 @@ class _DivisionGamePageState extends State<DivisionGamePage> {
     });
   }
 
-  void checkAnswer({bool skip = false}) {
+  Future<void> checkAnswer({bool skip = false}) async {
     questionTimer?.cancel();
 
     setState(() {
@@ -102,10 +124,16 @@ class _DivisionGamePageState extends State<DivisionGamePage> {
       int correctAnswer = questions[currentQuestion]['answer'];
 
       isCorrect = userAnswer == correctAnswer;
-      if (isCorrect) score++;
+      if (isCorrect) {
+        score++;
+        playCorrectSound();
+      } else {
+        playWrongSound();
+      }
 
       showResult = true;
     });
+    controller.clear();
   }
 
   void nextQuestion() {
@@ -119,6 +147,11 @@ class _DivisionGamePageState extends State<DivisionGamePage> {
         showFinalDialog();
       } else if (currentLevel == 2) {
         startQuestionTimer();
+      }
+
+      // Yangi savol audio faylini ijro etish
+      if (currentQuestion < questions.length) {
+        playQuestionAudio();
       }
     });
   }
@@ -173,7 +206,7 @@ class _DivisionGamePageState extends State<DivisionGamePage> {
                       if (currentLevel == 1) {
                         currentLevel = 2;
                       }
-                      startPreCountdown();
+                      startPreCountdown(true);
                     },
                     child: Text(
                       currentLevel == 1 ? "Keyingi bosqich" : "Yana o'ynash",
@@ -185,6 +218,7 @@ class _DivisionGamePageState extends State<DivisionGamePage> {
             ],
           ),
     );
+    AudioPlayer().play(AssetSource('musics/multip_finish.mp3'));
   }
 
   @override
@@ -192,6 +226,7 @@ class _DivisionGamePageState extends State<DivisionGamePage> {
     timer?.cancel();
     questionTimer?.cancel();
     controller.dispose();
+    audioPlayer.dispose();
     super.dispose();
   }
 

@@ -101,10 +101,13 @@ class _MathCoursePageState extends State<MathCoursePage> {
             ),
             CustomButton(
               function: () {
+                _playDialogSound('musics/attention_bolish.mp3');
                 showDialog(
                   context: context,
                   builder:
                       (context) => AttentionDialog(
+                        startSound: 'musics/diqqat_boshlanmoqda.mp3',
+                        audioPlayer: audioPlayer,
                         function: () {
                           Navigator.of(context).pop();
                           Navigator.push(
@@ -128,10 +131,14 @@ class _MathCoursePageState extends State<MathCoursePage> {
               padding: const EdgeInsets.symmetric(vertical: 30),
               child: CustomButton(
                 function: () {
+                  _playDialogSound('musics/attention_adv.mp3');
+
                   showDialog(
                     context: context,
                     builder:
                         (context) => AttentionDialog(
+                          audioPlayer: audioPlayer,
+                          startSound: 'musics/diqqat_boshlanmoqda.mp3',
                           function: () {
                             Navigator.of(context).pop();
                             Navigator.push(
@@ -142,7 +149,7 @@ class _MathCoursePageState extends State<MathCoursePage> {
                             );
                           },
                           text:
-                              'Sizga tasodifiy sonlar beriladi va siz ularni tezkorlik bilan kopaytirishingiz kerak.\n\nO‘yinni boshlaymizmi?',
+                              'Sizga  misollar beriladi va siz ularni tezkorlik bilan hisoblashingiz kerak.\n\nO‘yinni boshlaymizmi?',
                         ),
                   );
                 },
@@ -154,10 +161,15 @@ class _MathCoursePageState extends State<MathCoursePage> {
             ),
             CustomButton(
               function: () {
+                _playDialogSound('musics/attention_guess.mp3');
+
                 showDialog(
                   context: context,
                   builder:
                       (context) => AttentionDialog(
+                        audioPlayer: audioPlayer,
+                        startSound: 'musics/diqqat_boshlanmoqda.mp3',
+
                         function: () {
                           Navigator.of(context).pop();
                           Navigator.push(
@@ -168,7 +180,7 @@ class _MathCoursePageState extends State<MathCoursePage> {
                           );
                         },
                         text:
-                            'Komputer son o\'ylaydi va siz ularni tezkorlik bilan topishing kerak.\n\nO‘yinni boshlaymizmi?',
+                            'Komputer son o\'ylaydi va siz o\'sha sonni  topishing kerak.\n\nO‘yinni boshlaymizmi?',
                       ),
                 );
               },

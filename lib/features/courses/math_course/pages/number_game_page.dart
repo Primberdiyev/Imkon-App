@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
 class GuessNumberGame extends StatefulWidget {
@@ -12,7 +13,7 @@ class GuessNumberGame extends StatefulWidget {
 
 class _GuessNumberGameState extends State<GuessNumberGame> {
   final TextEditingController _guessController = TextEditingController();
-
+  final AudioPlayer audioPlayer = AudioPlayer();
   late int _targetNumber;
   int _countdown = 5;
   bool _isGameStarted = false;
@@ -48,9 +49,10 @@ class _GuessNumberGameState extends State<GuessNumberGame> {
 
   void _startGame() {
     final random = Random();
-    _targetNumber = random.nextInt(100) + 1; // 1 dan 100 gacha
+    _targetNumber = random.nextInt(100) + 1;
     _isGameStarted = true;
     _feedback = '1 dan 100 gacha son o\'yladim. Topishga harakat qiling!';
+    audioPlayer.play(AssetSource('musics/guess_thought.mp3'));
     _guessController.clear();
     _attempts = 0;
   }
@@ -71,11 +73,16 @@ class _GuessNumberGameState extends State<GuessNumberGame> {
       if (guess == _targetNumber) {
         _feedback =
             '🎉 Tabriklaymiz! $_attempts ta urinishda topdingiz!\n\nYana o\'ynaysizmi?';
+        audioPlayer.play(AssetSource('musics/number_found.mp3'));
+
         _isGameStarted = false;
       } else if (guess > _targetNumber) {
+        audioPlayer.play(AssetSource('musics/number_smaller.mp3'));
+
         _feedback = 'Men o\'ylagan son bundan kichikroq 🤏';
       } else {
         _feedback = 'Men o\'ylagan son bundan kattaroq 📈';
+        audioPlayer.play(AssetSource('musics/number_bigger.mp3'));
       }
     });
 
@@ -90,6 +97,7 @@ class _GuessNumberGameState extends State<GuessNumberGame> {
   void dispose() {
     _countdownTimer?.cancel();
     _guessController.dispose();
+    audioPlayer.dispose();
     super.dispose();
   }
 

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:math_expressions/math_expressions.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class MathGameAdvanced extends StatefulWidget {
   const MathGameAdvanced({super.key});
@@ -11,10 +12,11 @@ class MathGameAdvanced extends StatefulWidget {
 
 class _MathGameAdvancedState extends State<MathGameAdvanced>
     with SingleTickerProviderStateMixin {
-  //final AudioPlayer _audioPlayer = AudioPlayer();
+  final AudioPlayer _audioPlayer = AudioPlayer();
   final TextEditingController _answerController = TextEditingController();
   final List<String> _questions = [];
   final List<int> _correctAnswers = [];
+  final List<String> _questionAudios = [];
   int _currentQuestionIndex = 0;
   int _questionCountdown = 5;
   int _countdown = 5;
@@ -22,9 +24,13 @@ class _MathGameAdvancedState extends State<MathGameAdvanced>
   bool _isGameStarted = false;
   bool _isTimerQuestions = false;
   bool _isInitialQuestionsDone = false;
+  bool _isAnswerChecked = false;
+  bool _isAnswerCorrect = false;
   Timer? _countdownTimer;
   Timer? _questionTimer;
   late AnimationController _animationController;
+  bool _isAudioPlaying = false;
+  StreamSubscription? _audioCompleteSubscription;
 
   @override
   void initState() {
@@ -38,7 +44,14 @@ class _MathGameAdvancedState extends State<MathGameAdvanced>
   }
 
   void _generateInitialQuestions() {
-    _questions.addAll(['4+5*6', '(2+3)*2-1', '8*3+2', '10-3*2', '5+6*2-4']);
+    _questions.addAll(['4+5*6', '5*2-1', '8*3+2', '10-3*2', '5+6*2-4']);
+    _questionAudios.addAll([
+      'musics/adv0.mp3',
+      'musics/adv1.mp3',
+      'musics/adv2.mp3',
+      'musics/adv3.mp3',
+      'musics/adv4.mp3',
+    ]);
     for (var q in _questions) {
       _correctAnswers.add(_evaluateExpression(q));
     }
@@ -52,6 +65,58 @@ class _MathGameAdvancedState extends State<MathGameAdvanced>
     return result.toInt();
   }
 
+  Future<void> _playQuestionAudio() async {
+    if (_currentQuestionIndex >= _questionAudios.length) return;
+
+    // Cancel any existing audio subscription
+    _audioCompleteSubscription?.cancel();
+
+    try {
+      setState(() {
+        _isAudioPlaying = true;
+      });
+
+      // Stop any currently playing audio
+      await _audioPlayer.stop();
+
+      // Play the new audio
+      await _audioPlayer.play(
+        AssetSource(_questionAudios[_currentQuestionIndex]),
+      );
+
+      // Listen for audio completion
+      _audioCompleteSubscription = _audioPlayer.onPlayerComplete.listen((_) {
+        setState(() {
+          _isAudioPlaying = false;
+        });
+      });
+    } catch (e) {
+      setState(() {
+        _isAudioPlaying = false;
+      });
+    }
+  }
+
+  Future<void> _stopCurrentAudio() async {
+    try {
+      await _audioPlayer.stop();
+      _audioCompleteSubscription?.cancel();
+      setState(() {
+        _isAudioPlaying = false;
+      });
+    } catch (e) {}
+  }
+
+  Future<void> _playCorrectSound() async {
+    await _stopCurrentAudio();
+    await _audioPlayer.play(AssetSource('musics/togri.mp3'));
+  }
+
+  Future<void> _playWrongSound() async {
+    await _stopCurrentAudio();
+    await _audioPlayer.play(AssetSource('musics/notogri.mp3'));
+  }
+
   void _startCountdown() {
     _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
@@ -60,6 +125,7 @@ class _MathGameAdvancedState extends State<MathGameAdvanced>
         } else {
           timer.cancel();
           _isGameStarted = true;
+          _playQuestionAudio();
         }
       });
     });
@@ -69,31 +135,57 @@ class _MathGameAdvancedState extends State<MathGameAdvanced>
     _isTimerQuestions = true;
     _questions.clear();
     _correctAnswers.clear();
+    _questionAudios.clear();
     _currentQuestionIndex = 0;
     _generateTimerQuestions();
     _showNextTimerQuestion();
   }
 
   void _generateTimerQuestions() {
-    _questions.addAll(['3+2*2', '(4+1)*3', '12-2*4', '7+8-2*3', '(6+2)*(3-1)']);
+    _questions.addAll(['3+2*2', '5*3-1', '12-2*4', '8-2*3', '4*1+2']);
+    _questionAudios.addAll([
+      'musics/adv5.mp3',
+      'musics/adv6.mp3',
+      'musics/adv7.mp3',
+      'musics/adv8.mp3',
+      'musics/adv9.mp3',
+    ]);
     for (var q in _questions) {
       _correctAnswers.add(_evaluateExpression(q));
     }
   }
 
-  void _showNextTimerQuestion() {
-    _answerController.clear();
+  void _showNextTimerQuestion() async {
+    await _stopCurrentAudio();
+
+    setState(() {
+      _answerController.clear();
+      _isAnswerChecked = false;
+      _isAnswerCorrect = false;
+    });
+
     if (_currentQuestionIndex < _questions.length) {
-      _questionCountdown = 10;
+      _questionCountdown = 15;
       _animationController.forward(from: 0);
+      _playQuestionAudio();
+
       _questionTimer?.cancel();
       _questionTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
         setState(() {
-          _questionCountdown--;
-          if (_questionCountdown == 0) {
+          if (!_isAudioPlaying) {
+            _questionCountdown--;
+          }
+
+          if (_questionCountdown <= 0) {
             timer.cancel();
             _currentQuestionIndex++;
-            _showNextTimerQuestion();
+            if (_currentQuestionIndex < _questions.length) {
+              _showNextTimerQuestion();
+            } else {
+              setState(() {
+                _isTimerQuestions = false;
+              });
+            }
           }
         });
       });
@@ -103,12 +195,24 @@ class _MathGameAdvancedState extends State<MathGameAdvanced>
     }
   }
 
-  void _checkInitialAnswer() {
+  Future<void> _checkInitialAnswer() async {
     int? userAnswer = int.tryParse(_answerController.text.trim());
-    if (userAnswer != null &&
-        userAnswer == _correctAnswers[_currentQuestionIndex]) {
+    _isAnswerCorrect =
+        userAnswer != null &&
+        userAnswer == _correctAnswers[_currentQuestionIndex];
+
+    if (_isAnswerCorrect) {
       _score++;
+      await _playCorrectSound();
+    } else {
+      await _playWrongSound();
     }
+
+    setState(() {
+      _isAnswerChecked = true;
+    });
+
+    await Future.delayed(const Duration(seconds: 2));
 
     _currentQuestionIndex++;
     _answerController.clear();
@@ -143,18 +247,29 @@ class _MathGameAdvancedState extends State<MathGameAdvanced>
               ],
             ),
       );
-    } else {
-      setState(() {});
-    }
+    } else {}
   }
 
-  void _checkTimerAnswer() async {
+  Future<void> _checkTimerAnswer() async {
     if (_answerController.text.trim().isEmpty) return;
+
     int? answer = int.tryParse(_answerController.text);
-    if (answer == _correctAnswers[_currentQuestionIndex]) {
-      //  await _audioPlayer.play(AssetSource('musics/success1.mp3'));
+    _isAnswerCorrect = answer == _correctAnswers[_currentQuestionIndex];
+
+    if (_isAnswerCorrect) {
+      _score++;
+      await _playCorrectSound();
+    } else {
+      await _playWrongSound();
     }
+
+    setState(() {
+      _isAnswerChecked = true;
+    });
     _questionTimer?.cancel();
+
+    await Future.delayed(const Duration(seconds: 4));
+
     _currentQuestionIndex++;
     _showNextTimerQuestion();
   }
@@ -164,7 +279,8 @@ class _MathGameAdvancedState extends State<MathGameAdvanced>
     _countdownTimer?.cancel();
     _questionTimer?.cancel();
     _animationController.dispose();
-    // _audioPlayer.dispose();
+    _audioCompleteSubscription?.cancel();
+    _audioPlayer.dispose();
     _answerController.dispose();
     super.dispose();
   }
@@ -209,9 +325,9 @@ class _MathGameAdvancedState extends State<MathGameAdvanced>
                                     color: Colors.green,
                                   ),
                                 ),
-                                SizedBox(height: 20),
+                                const SizedBox(height: 20),
                                 Text(
-                                  'Notog‘ri javoblar: ${_correctAnswers.length - _score}',
+                                  'Notog‘ri javoblar: ${10 - _score}',
                                   style: const TextStyle(
                                     fontSize: 20,
                                     color: Colors.red,
@@ -221,7 +337,7 @@ class _MathGameAdvancedState extends State<MathGameAdvanced>
                                 TextButton(
                                   style: TextButton.styleFrom(
                                     backgroundColor: Colors.blue,
-                                    fixedSize: Size(200, 50),
+                                    fixedSize: const Size(200, 50),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8),
                                     ),
@@ -229,7 +345,7 @@ class _MathGameAdvancedState extends State<MathGameAdvanced>
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },
-                                  child: Text(
+                                  child: const Text(
                                     'Bosh sahifa',
                                     style: TextStyle(
                                       color: Colors.white,
@@ -243,7 +359,11 @@ class _MathGameAdvancedState extends State<MathGameAdvanced>
               ),
             ),
           ),
-          Positioned(top: 60, left: 10, child: BackButton(color: Colors.black)),
+          const Positioned(
+            top: 60,
+            left: 10,
+            child: BackButton(color: Colors.black),
+          ),
         ],
       ),
     );
@@ -280,34 +400,73 @@ class _MathGameAdvancedState extends State<MathGameAdvanced>
           style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 20),
-        TextField(
-          controller: _answerController,
-          keyboardType: TextInputType.number,
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: 'Javobingizni kiriting',
-          ),
-        ),
-
-        const SizedBox(height: 50),
-        TextButton(
-          style: TextButton.styleFrom(
-            backgroundColor: Colors.blue,
-            fixedSize: Size(150, 50),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5),
+        if (!_isAnswerChecked)
+          TextField(
+            controller: _answerController,
+            keyboardType: TextInputType.number,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              hintText: 'Javobingizni kiriting',
             ),
           ),
-          onPressed: _checkInitialAnswer,
-          child: const Text(
-            'Tekshirish',
+        const SizedBox(height: 20),
+        if (_isAnswerChecked)
+          Text(
+            _isAnswerCorrect
+                ? '✅ Tabriklaymiz! Sizning javobingiz To\'gri'
+                : '❌ Noto‘g‘ri! To‘g‘ri javob: ${_correctAnswers[_currentQuestionIndex]}',
             style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'myFirstFont',
               fontSize: 18,
+              color: _isAnswerCorrect ? Colors.green : Colors.red,
             ),
           ),
-        ),
+        const SizedBox(height: 20),
+        if (!_isAnswerChecked)
+          TextButton(
+            style: TextButton.styleFrom(
+              backgroundColor: Colors.blue,
+              fixedSize: const Size(150, 50),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
+            ),
+            onPressed: _checkInitialAnswer,
+            child: const Text(
+              'Tekshirish',
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'myFirstFont',
+                fontSize: 18,
+              ),
+            ),
+          ),
+        if (_isAnswerChecked)
+          TextButton(
+            style: TextButton.styleFrom(
+              backgroundColor: Colors.green,
+              fixedSize: const Size(150, 50),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
+            ),
+            onPressed: () async {
+              setState(() {
+                _isAnswerChecked = false;
+                _answerController.clear();
+              });
+              await _stopCurrentAudio();
+
+              _playQuestionAudio();
+            },
+            child: const Text(
+              'Keyingi',
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'myFirstFont',
+                fontSize: 18,
+              ),
+            ),
+          ),
       ],
     );
   }
@@ -340,35 +499,71 @@ class _MathGameAdvancedState extends State<MathGameAdvanced>
                 style: const TextStyle(fontSize: 24, color: Colors.red),
               ),
               const SizedBox(height: 20),
-              TextField(
-                controller: _answerController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Javobingiz',
-                ),
-                onSubmitted: (_) => _checkTimerAnswer(),
-              ),
-              const SizedBox(height: 30),
-
-              TextButton(
-                style: TextButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  fixedSize: Size(150, 50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
+              if (!_isAnswerChecked)
+                TextField(
+                  controller: _answerController,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Javobingiz',
                   ),
+                  onSubmitted: (_) => _checkTimerAnswer(),
                 ),
-                onPressed: _checkTimerAnswer,
-                child: const Text(
-                  'Tekshirish',
+              const SizedBox(height: 20),
+              if (_isAnswerChecked)
+                Text(
+                  textAlign: TextAlign.center,
+                  _isAnswerCorrect
+                      ? '✅ Tabriklaymiz!, Sizning javobingiz To\'gri'
+                      : '❌ Noto‘g‘ri! To‘g‘ri javob: ${_correctAnswers[_currentQuestionIndex]}',
                   style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: 'myFirstFont',
                     fontSize: 18,
+                    color: _isAnswerChecked ? Colors.green : Colors.red,
                   ),
                 ),
-              ),
+              const SizedBox(height: 30),
+              if (!_isAnswerChecked)
+                TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    fixedSize: const Size(150, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                  ),
+                  onPressed: _checkTimerAnswer,
+                  child: const Text(
+                    'Tekshirish',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'myFirstFont',
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+              // if (_isAnswerChecked)
+              //   TextButton(
+              //     style: TextButton.styleFrom(
+              //       backgroundColor: Colors.green,
+              //       fixedSize: const Size(150, 50),
+              //       shape: RoundedRectangleBorder(
+              //         borderRadius: BorderRadius.circular(5),
+              //       ),
+              //     ),
+              //     onPressed: () async {
+              //       await _stopCurrentAudio();
+              //       _currentQuestionIndex++;
+              //       _showNextTimerQuestion();
+              //     },
+              //     child: const Text(
+              //       'Keyingi',
+              //       style: TextStyle(
+              //         color: Colors.white,
+              //         fontFamily: 'myFirstFont',
+              //         fontSize: 18,
+              //       ),
+              //     ),
+              //   ),
             ],
           )
         else
