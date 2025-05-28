@@ -10,14 +10,14 @@ class Fields extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: const EdgeInsets.only(top: 100, right: 25, left: 25),
+      padding: const EdgeInsets.only(top: 70, right: 25, left: 25),
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: const [
             Text(
-              'Dilshodbek',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              'Imkon',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             Icon(Icons.notifications),
           ],

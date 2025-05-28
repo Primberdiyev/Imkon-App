@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class ConsonantCharactersPage extends StatefulWidget {
   const ConsonantCharactersPage({super.key});
@@ -12,11 +13,27 @@ class ConsonantCharactersPage extends StatefulWidget {
 class _ConsonantCharactersPageState extends State<ConsonantCharactersPage> {
   final List<String> consonants = ['B', 'D', 'F', 'G', 'H'];
   final Map<String, String> images = {
-    'B': 'assets/images/undosh/b.jpg',
-    'D': 'assets/images/undosh/d.jpg',
-    'F': 'assets/images/undosh/f.jpg',
-    'G': 'assets/images/undosh/g.jpg',
-    'H': 'assets/images/undosh/h.jpg',
+    'B': 'assets/images/undosh/baliq.jpg',
+    'D': 'assets/images/undosh/daryo.jpg',
+    'F': 'assets/images/undosh/futbol.jpg',
+    'G': 'assets/images/undosh/gul.jpg',
+    'H': 'assets/images/undosh/haydovchi.jpg',
+  };
+
+  final Map<String, String> letterSounds = {
+    'B': 'musics/b.mp3',
+    'D': 'musics/d.mp3',
+    'F': 'musics/f.mp3',
+    'G': 'musics/g.mp3',
+    'H': 'musics/h.mp3',
+  };
+
+  final Map<String, String> imageSounds = {
+    'B': 'musics/baliq.mp3',
+    'D': 'musics/daryo.mp3',
+    'F': 'musics/futbol.mp3',
+    'G': 'musics/gul.mp3',
+    'H': 'musics/haydovchi.mp3',
   };
 
   final List<Color> bgColors = [
@@ -28,12 +45,36 @@ class _ConsonantCharactersPageState extends State<ConsonantCharactersPage> {
   ];
 
   int currentIndex = 0;
+  late AudioPlayer audioPlayer;
+
+  @override
+  void initState() {
+    super.initState();
+    audioPlayer = AudioPlayer();
+  }
+
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+    super.dispose();
+  }
+
+  Future<void> playSound(String path) async {
+    try {
+      await audioPlayer.stop(); // Stop any currently playing sound
+      await audioPlayer.play(AssetSource(path));
+    } catch (e) {
+      debugPrint('Error playing sound: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final letter = consonants[currentIndex];
     final imagePath = images[letter] ?? '';
     final bgColor = bgColors[currentIndex % bgColors.length];
+    final letterSound = letterSounds[letter] ?? '';
+    final imageSound = imageSounds[letter] ?? '';
 
     return Scaffold(
       backgroundColor: bgColor,
@@ -59,59 +100,53 @@ class _ConsonantCharactersPageState extends State<ConsonantCharactersPage> {
               children: [
                 Column(
                   children: [
-                    AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 500),
-                      transitionBuilder:
-                          (child, animation) =>
+                    Stack(
+                      alignment: Alignment.topRight,
+                      children: [
+                        AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 500),
+                          transitionBuilder: (child, animation) =>
                               ScaleTransition(scale: animation, child: child),
-                      child: Text(
-                        letter,
-                        key: ValueKey(letter),
-                        style: GoogleFonts.fredoka(
-                          fontSize: 140,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black87,
+                          child: Text(
+                            letter,
+                            key: ValueKey(letter),
+                            style: GoogleFonts.fredoka(
+                              fontSize: 140,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black87,
+                            ),
+                          ),
                         ),
-                      ),
+                        IconButton(
+                          icon: const Icon(Icons.volume_up, size: 30),
+                          onPressed: () => playSound(letterSound),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 16),
-                    AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 700),
-                      transitionBuilder:
-                          (child, animation) =>
+                    Stack(
+                      alignment: Alignment.topRight,
+                      children: [
+                        AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 700),
+                          transitionBuilder: (child, animation) =>
                               ScaleTransition(scale: animation, child: child),
-                      child: ClipRRect(
-                        key: ValueKey<String>(imagePath),
-                        borderRadius: BorderRadius.circular(16),
-                        child: Image.asset(
-                          imagePath,
-                          height: 180,
-                          fit: BoxFit.cover,
+                          child: ClipRRect(
+                            key: ValueKey<String>(imagePath),
+                            borderRadius: BorderRadius.circular(16),
+                            child: Image.asset(
+                              imagePath,
+                              height: 250,
+                              width: 200,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    ElevatedButton.icon(
-                      onPressed: () {
-                        // TODO: text-to-speech qo‘shiladi
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.black87,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 12,
+                        IconButton(
+                          icon: const Icon(Icons.volume_up, size: 30),
+                          onPressed: () => playSound(imageSound),
                         ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        elevation: 4,
-                      ),
-                      icon: const Icon(Icons.volume_up),
-                      label: const Text(
-                        "Eshitish",
-                        style: TextStyle(fontSize: 18),
-                      ),
+                      ],
                     ),
                   ],
                 ),
@@ -126,31 +161,30 @@ class _ConsonantCharactersPageState extends State<ConsonantCharactersPage> {
                         } else {
                           showDialog(
                             context: context,
-                            builder:
-                                (_) => AlertDialog(
-                                  title: const Text("Tabriklaymiz! 🎉"),
-                                  content: const Text(
-                                    "Siz barcha undosh harflarni muvaffaqiyatli ko‘rdingiz!",
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                      style: TextButton.styleFrom(
-                                        backgroundColor: Colors.blue,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(10),
-                                        ),
-                                      ),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text(
-                                        "Bosh sahifa",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
+                            builder: (_) => AlertDialog(
+                              title: const Text("Tabriklaymiz! 🎉"),
+                              content: const Text(
+                                "Siz barcha undosh harflarni muvaffaqiyatli ko'rdigiz!",
+                              ),
+                              actions: [
+                                TextButton(
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: Colors.blue,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
-                                  ],
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text(
+                                    "Bosh sahifa",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                                 ),
+                              ],
+                            ),
                           );
                         }
                       },

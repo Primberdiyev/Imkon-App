@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class AllCharactersPage extends StatefulWidget {
   const AllCharactersPage({super.key});
@@ -12,10 +13,24 @@ class _AllCharactersPageState extends State<AllCharactersPage>
     with SingleTickerProviderStateMixin {
   final List<String> letters = ['A', 'B', 'D', 'E'];
   final Map<String, String> images = {
-    'A': 'assets/images/characters/a.jpg',
-    'B': 'assets/images/characters/b.jpg',
-    'D': 'assets/images/characters/d.jpg',
-    'E': 'assets/images/characters/e.jpg',
+    'A': 'assets/images/characters/anor.jpg',
+    'B': 'assets/images/characters/bahor.jpg',
+    'D': 'assets/images/characters/daraxt.jpg',
+    'E': 'assets/images/characters/echki.jpg',
+  };
+
+  final Map<String, String> letterSounds = {
+    'A': 'musics/a.mp3',
+    'B': 'musics/b.mp3',
+    'D': 'musics/d.mp3',
+    'E': 'musics/e.mp3',
+  };
+
+  final Map<String, String> imageSounds = {
+    'A': 'musics/anor.mp3',
+    'B': 'musics/bahor.mp3',
+    'D': 'musics/daraxt.mp3',
+    'E': 'musics/echki.mp3',
   };
 
   final List<Color> bgColors = [
@@ -26,12 +41,36 @@ class _AllCharactersPageState extends State<AllCharactersPage>
   ];
 
   int currentIndex = 0;
+  late AudioPlayer audioPlayer;
+
+  @override
+  void initState() {
+    super.initState();
+    audioPlayer = AudioPlayer();
+  }
+
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+    super.dispose();
+  }
+
+  Future<void> playSound(String path) async {
+    try {
+      await audioPlayer.stop(); // Stop any currently playing sound
+      await audioPlayer.play(AssetSource(path));
+    } catch (e) {
+      debugPrint('Error playing sound: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final letter = letters[currentIndex];
     final imagePath = images[letter] ?? '';
     final bgColor = bgColors[currentIndex % bgColors.length];
+    final letterSound = letterSounds[letter] ?? '';
+    final imageSound = imageSounds[letter] ?? '';
 
     return Scaffold(
       backgroundColor: bgColor,
@@ -53,52 +92,46 @@ class _AllCharactersPageState extends State<AllCharactersPage>
                 ),
                 Column(
                   children: [
-                    AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 500),
-                      transitionBuilder:
-                          (child, animation) =>
+                    Stack(
+                      alignment: Alignment.topRight,
+                      children: [
+                        AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 500),
+                          transitionBuilder: (child, animation) =>
                               ScaleTransition(scale: animation, child: child),
-                      child: Text(
-                        letter,
-                        key: ValueKey(letter),
-                        style: GoogleFonts.fredoka(
-                          fontSize: 140,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black87,
+                          child: Text(
+                            letter,
+                            key: ValueKey(letter),
+                            style: GoogleFonts.fredoka(
+                              fontSize: 140,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black87,
+                            ),
+                          ),
                         ),
-                      ),
+                        IconButton(
+                          icon: const Icon(Icons.volume_up, size: 30),
+                          onPressed: () => playSound(letterSound),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 16),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: Image.asset(
-                        imagePath,
-                        height: 180,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    ElevatedButton.icon(
-                      onPressed: () {
-                        // TODO: text-to-speech qo'shiladi
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.black87,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 12,
-                        ),
-                        shape: RoundedRectangleBorder(
+                    Stack(
+                      alignment: Alignment.topRight,
+                      children: [
+                        ClipRRect(
                           borderRadius: BorderRadius.circular(16),
+                          child: Image.asset(
+                            imagePath,
+                            height: 180,
+                            fit: BoxFit.contain,
+                          ),
                         ),
-                        elevation: 4,
-                      ),
-                      icon: const Icon(Icons.volume_up),
-                      label: const Text(
-                        "Eshitish",
-                        style: TextStyle(fontSize: 18),
-                      ),
+                        IconButton(
+                          icon: const Icon(Icons.volume_up, size: 30),
+                          onPressed: () => playSound(imageSound),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -113,22 +146,21 @@ class _AllCharactersPageState extends State<AllCharactersPage>
                         } else {
                           showDialog(
                             context: context,
-                            builder:
-                                (_) => AlertDialog(
-                                  title: const Text("Tabriklaymiz! 🎉"),
-                                  content: const Text(
-                                    "Siz barcha harflarni muvaffaqiyatli ko‘rdingiz!",
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                        Navigator.pop(context); // or go home
-                                      },
-                                      child: const Text("Bosh sahifa"),
-                                    ),
-                                  ],
+                            builder: (_) => AlertDialog(
+                              title: const Text("Tabriklaymiz! 🎉"),
+                              content: const Text(
+                                "Siz barcha harflarni muvaffaqiyatli ko‘rdingiz!",
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    Navigator.pop(context); // or go home
+                                  },
+                                  child: const Text("Bosh sahifa"),
                                 ),
+                              ],
+                            ),
                           );
                         }
                       },
