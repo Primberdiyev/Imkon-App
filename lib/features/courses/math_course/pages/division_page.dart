@@ -288,7 +288,7 @@ class _DivisionGamePageState extends State<DivisionGamePage> {
             const SizedBox(height: 20),
             Text(
               isCorrect
-                  ? "✅ Tabriklaymiz, Siz to'g'ri bajardingiz!"
+                  ? "✅ Tabriklayman, Siz to'g'ri bajardingiz!"
                   : "❌ Misolning to'g'ri javobi ${q['answer']} edi.",
               style: const TextStyle(fontSize: 18),
               textAlign: TextAlign.center,

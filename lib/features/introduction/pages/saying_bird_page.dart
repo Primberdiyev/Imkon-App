@@ -32,7 +32,6 @@ class SayingBirdPage extends StatelessWidget {
             padding: const EdgeInsets.only(left: 40),
             child: Image.asset(
               'assets/images/saying_bird.png',
-
               height: 150,
               width: 150,
             ),
@@ -52,7 +51,7 @@ class SayingBirdPage extends StatelessWidget {
               textColor: Colors.white,
             ),
           ),
-          SizedBox(height: 50),
+          SizedBox(height: 70),
         ],
       ),
     );

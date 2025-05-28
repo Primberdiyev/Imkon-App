@@ -90,7 +90,7 @@ class GameStartedPage extends StatelessWidget {
           if (isAnswerChecked) ...[
             Text(
               isAnswerCorrect!
-                  ? '✅ Tabriklaymiz!, Sizning javobingiz To\'g\'ri'
+                  ? '✅ Tabriklayman!, Sizning javobingiz To\'g\'ri'
                   : 'Afsuski sizning javobingiz notog\'ri',
               style: TextStyle(
                 color: isAnswerCorrect! ? Color(0xFF1BAC4B) : Colors.redAccent,

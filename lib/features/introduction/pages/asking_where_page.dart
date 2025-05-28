@@ -81,19 +81,18 @@ class _AskingWherePageState extends State<AskingWherePage> {
         ],
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 30, left: 30, right: 30),
+        padding: const EdgeInsets.only(bottom: 50, left: 30, right: 30),
         child: CustomButton(
-          function:
-              selectedItem != null
-                  ? () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AskingKnowledgePage(),
-                      ),
-                    );
-                  }
-                  : null,
+          function: selectedItem != null
+              ? () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AskingKnowledgePage(),
+                    ),
+                  );
+                }
+              : null,
           text: 'Davom Ettirish',
           textSize: 24,
           buttonColor: selectedItem != null ? Color(0xFFFFD700) : Colors.grey,

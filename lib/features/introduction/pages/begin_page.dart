@@ -56,7 +56,7 @@ class BeginPage extends StatelessWidget {
               buttonColor: Color(0xFFFFD700),
               textColor: Colors.white,
             ),
-            SizedBox(height: 50),
+            SizedBox(height: 70),
           ],
         ),
       ),

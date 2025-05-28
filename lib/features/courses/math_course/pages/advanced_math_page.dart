@@ -197,8 +197,7 @@ class _MathGameAdvancedState extends State<MathGameAdvanced>
 
   Future<void> _checkInitialAnswer() async {
     int? userAnswer = int.tryParse(_answerController.text.trim());
-    _isAnswerCorrect =
-        userAnswer != null &&
+    _isAnswerCorrect = userAnswer != null &&
         userAnswer == _correctAnswers[_currentQuestionIndex];
 
     if (_isAnswerCorrect) {
@@ -221,31 +220,30 @@ class _MathGameAdvancedState extends State<MathGameAdvanced>
       _isInitialQuestionsDone = true;
       showDialog(
         context: context,
-        builder:
-            (ctx) => AlertDialog(
-              title: const Text('Natija'),
-              content: Text(
-                '$_score / ${_correctAnswers.length} to‘g‘ri javob',
-              ),
-              actions: [
-                TextButton(
-                  style: TextButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.of(ctx).pop();
-                    _startTimerQuestions();
-                  },
-                  child: const Text(
-                    'Keyingi bosqich',
-                    style: TextStyle(color: Colors.white),
-                  ),
+        builder: (ctx) => AlertDialog(
+          title: const Text('Natija'),
+          content: Text(
+            '$_score / ${_correctAnswers.length} to‘g‘ri javob',
+          ),
+          actions: [
+            TextButton(
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.blue,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
                 ),
-              ],
+              ),
+              onPressed: () {
+                Navigator.of(ctx).pop();
+                _startTimerQuestions();
+              },
+              child: const Text(
+                'Keyingi bosqich',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
+          ],
+        ),
       );
     } else {}
   }
@@ -301,61 +299,60 @@ class _MathGameAdvancedState extends State<MathGameAdvanced>
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
-                child:
-                    _isGameStarted
-                        ? _isTimerQuestions
-                            ? _buildTimerQuestions()
-                            : !_isInitialQuestionsDone
+                child: _isGameStarted
+                    ? _isTimerQuestions
+                        ? _buildTimerQuestions()
+                        : !_isInitialQuestionsDone
                             ? _buildInitialStepByStepQuestions()
                             : Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text(
-                                  'O‘yin tugadi!',
-                                  style: TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const SizedBox(height: 20),
-                                Text(
-                                  'To‘g‘ri javoblar: $_score',
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.green,
-                                  ),
-                                ),
-                                const SizedBox(height: 20),
-                                Text(
-                                  'Notog‘ri javoblar: ${10 - _score}',
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.red,
-                                  ),
-                                ),
-                                const SizedBox(height: 30),
-                                TextButton(
-                                  style: TextButton.styleFrom(
-                                    backgroundColor: Colors.blue,
-                                    fixedSize: const Size(200, 50),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: const Text(
-                                    'Bosh sahifa',
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Text(
+                                    'O‘yin tugadi!',
                                     style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                ),
-                              ],
-                            )
-                        : _buildCountdown(),
+                                  const SizedBox(height: 20),
+                                  Text(
+                                    'To‘g‘ri javoblar: $_score',
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.green,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  Text(
+                                    'Notog‘ri javoblar: ${10 - _score}',
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 30),
+                                  TextButton(
+                                    style: TextButton.styleFrom(
+                                      backgroundColor: Colors.blue,
+                                      fixedSize: const Size(200, 50),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text(
+                                      'Bosh sahifa',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                    : _buildCountdown(),
               ),
             ),
           ),
@@ -413,7 +410,7 @@ class _MathGameAdvancedState extends State<MathGameAdvanced>
         if (_isAnswerChecked)
           Text(
             _isAnswerCorrect
-                ? '✅ Tabriklaymiz! Sizning javobingiz To\'gri'
+                ? '✅ Tabriklayman! Sizning javobingiz To\'gri'
                 : '❌ Noto‘g‘ri! To‘g‘ri javob: ${_correctAnswers[_currentQuestionIndex]}',
             style: TextStyle(
               fontSize: 18,
@@ -514,7 +511,7 @@ class _MathGameAdvancedState extends State<MathGameAdvanced>
                 Text(
                   textAlign: TextAlign.center,
                   _isAnswerCorrect
-                      ? '✅ Tabriklaymiz!, Sizning javobingiz To\'gri'
+                      ? '✅ Tabriklayman!, Sizning javobingiz To\'gri'
                       : '❌ Noto‘g‘ri! To‘g‘ri javob: ${_correctAnswers[_currentQuestionIndex]}',
                   style: TextStyle(
                     fontSize: 18,
