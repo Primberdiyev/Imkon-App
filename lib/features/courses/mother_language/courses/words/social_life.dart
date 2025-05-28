@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:imkon/features/utils/app_images.dart';
+import 'package:audioplayers/audioplayers.dart'; 
 
 class SocialLifePage extends StatefulWidget {
   const SocialLifePage({Key? key}) : super(key: key);
@@ -12,16 +13,56 @@ class SocialLifePage extends StatefulWidget {
 
 class _SocialLifePageState extends State<SocialLifePage> {
   final List<Map<String, String>> words = [
-    {"word": "Do‘stlik", "image": "assets/images/social/dostlik.jpg"},
-    {"word": "Bayram", "image": "assets/images/social/bayram.jpg"},
-    {"word": "Sayr", "image": "assets/images/social/sayr.jpg"},
-    {"word": "Oila", "image": "assets/images/social/oila.jpg"},
-    {"word": "Mehmon-\ndorchilik", "image": "assets/images/social/mehmon.jpg"},
-    {"word": "To‘y", "image": "assets/images/social/toy.jpg"},
-    {"word": "Tadbir", "image": "assets/images/social/tadbir.jpg"},
-    {"word": "Qo‘shni", "image": "assets/images/social/qoshni.jpg"},
-    {"word": "Yordam", "image": "assets/images/social/yordam.jpg"},
-    {"word": "Salomlashish", "image": "assets/images/social/salom.jpg"},
+    {
+      "word": "Do'stlik",
+      "image": "assets/images/social/dostlik.jpg",
+      'music': 'musics/dostlik.mp3'
+    },
+    {
+      "word": "Bayram",
+      "image": "assets/images/social/bayram.jpg",
+      'music': 'musics/bayram.mp3'
+    },
+    {
+      "word": "Sayr",
+      "image": "assets/images/social/sayr.jpg",
+      'music': 'musics/sayr.mp3'
+    },
+    {
+      "word": "Oila",
+      "image": "assets/images/social/oila.jpg",
+      'music': 'musics/oila.mp3'
+    },
+    {
+      "word": "Mehmon-\ndorchilik",
+      "image": "assets/images/social/mehmon.jpg",
+      'music': 'musics/mehmondorchilik.mp3'
+    },
+    {
+      "word": "To'y",
+      "image": "assets/images/social/toy.jpg",
+      'music': 'musics/toy.mp3'
+    },
+    {
+      "word": "Tadbir",
+      "image": "assets/images/social/tadbir.jpg",
+      'music': 'musics/tadbir.mp3'
+    },
+    {
+      "word": "Qo'shni",
+      "image": "assets/images/social/qoshni.jpg",
+      'music': 'musics/qoshni.mp3'
+    },
+    {
+      "word": "Yordam",
+      "image": "assets/images/social/yordam.jpg",
+      'music': 'musics/yordam.mp3'
+    },
+    {
+      "word": "Salomlashish",
+      "image": "assets/images/social/salom.jpg",
+      'music': 'musics/salomlashish.mp3'
+    },
   ];
 
   final List<Color> bgColors = [
@@ -41,11 +82,21 @@ class _SocialLifePageState extends State<SocialLifePage> {
   int countdown = 10;
   Timer? timer;
   Timer? countdownTimer;
+  final AudioPlayer audioPlayer = AudioPlayer(); // Add audio player instance
 
   @override
   void initState() {
     super.initState();
     startTimers();
+    _playCurrentWordAudio(); // Play audio for the first word
+  }
+
+  void _playCurrentWordAudio() async {
+    try {
+      await audioPlayer.play(AssetSource(words[currentIndex]['music']!));
+    } catch (e) {
+      print('Error playing audio: $e');
+    }
   }
 
   void startTimers() {
@@ -71,12 +122,24 @@ class _SocialLifePageState extends State<SocialLifePage> {
         } else {
           currentIndex++;
           countdown = 10;
+          _playCurrentWordAudio(); // Play audio for the new word
         }
       });
     });
   }
 
-  void showDialogToUser() {
+  void showDialogToUser() async {
+    // Play appropriate audio based on current index
+    try {
+      if (currentIndex == 4) {
+        await audioPlayer.play(AssetSource('musics/select_and_create.mp3'));
+      } else if (currentIndex == 9) {
+        await audioPlayer.play(AssetSource('musics/hikoya_tuzing.mp3'));
+      }
+    } catch (e) {
+      print('Error playing dialog audio: $e');
+    }
+
     int startIndex = currentIndex == 4 ? 0 : 5;
     int endIndex = currentIndex == 4 ? 5 : 10;
 
@@ -116,8 +179,8 @@ class _SocialLifePageState extends State<SocialLifePage> {
                       currentIndex == 4
                           ? "Namoyish etilgan so'zlarni ustozingizga ayting va ixtiyoriy 2 tasini tanlab gap tuzing."
                           : currentIndex == 9
-                          ? "Endi ushbu so'zlardan foydalanib hikoya tuzing va ustozingizga ayting."
-                          : "Namoyish etilgan so'zlardan foydalanib hikoya tuzing va uni ustozingizga aytib bering!",
+                              ? "Endi ushbu so'zlardan foydalanib hikoya tuzing va ustozingizga ayting."
+                              : "Namoyish etilgan so'zlardan foydalanib hikoya tuzing va uni ustozingizga aytib bering!",
                       style: GoogleFonts.poppins(fontSize: 16),
                       textAlign: TextAlign.center,
                     ),
@@ -155,7 +218,7 @@ class _SocialLifePageState extends State<SocialLifePage> {
                         ),
                       )
                     else
-                      Image.asset(AppImages.verify, width: 200, height: 200),
+                      Image.asset(AppImages.verify, width: 150, height: 150),
                   ],
                 ),
               ),
@@ -186,6 +249,7 @@ class _SocialLifePageState extends State<SocialLifePage> {
                         countdown = 10;
                       });
                       startTimers();
+                      _playCurrentWordAudio(); // Play audio for the new word
                     }
                   },
                   child: Text(
@@ -209,6 +273,7 @@ class _SocialLifePageState extends State<SocialLifePage> {
   void dispose() {
     timer?.cancel();
     countdownTimer?.cancel();
+    audioPlayer.dispose(); // Dispose the audio player
     super.dispose();
   }
 
@@ -304,6 +369,12 @@ class _SocialLifePageState extends State<SocialLifePage> {
                   fontWeight: FontWeight.w600,
                   color: Colors.indigo,
                 ),
+              ),
+              const SizedBox(height: 20),
+              IconButton(
+                icon: Icon(Icons.volume_up, size: 40),
+                color: Colors.indigo,
+                onPressed: _playCurrentWordAudio,
               ),
             ],
           ),

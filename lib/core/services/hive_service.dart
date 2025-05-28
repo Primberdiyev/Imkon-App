@@ -17,8 +17,8 @@ class HiveService {
     await userBox.add(user);
   }
 
-  static List<UserModel> getUserModels() {
-    return userBox.values.toList();
+  static UserModel getUserModel() {
+    return userBox.values.toList().last;
   }
 
   static Future<void> editUser(int index, UserModel newUser) async {

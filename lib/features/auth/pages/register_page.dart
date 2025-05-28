@@ -50,20 +50,18 @@ class _RegisterPageState extends State<RegisterPage> {
               controller: ageController,
               keyboardType: TextInputType.number,
             ),
-
             const SizedBox(height: 30),
             DropdownButtonFormField<String>(
               decoration: const InputDecoration(labelText: 'Viloyatni tanlang'),
               value: selectedRegion,
-              items:
-                  regions
-                      .map(
-                        (region) => DropdownMenuItem(
-                          value: region,
-                          child: Text(region),
-                        ),
-                      )
-                      .toList(),
+              items: regions
+                  .map(
+                    (region) => DropdownMenuItem(
+                      value: region,
+                      child: Text(region),
+                    ),
+                  )
+                  .toList(),
               onChanged: (value) {
                 setState(() {
                   selectedRegion = value;
@@ -71,23 +69,20 @@ class _RegisterPageState extends State<RegisterPage> {
                 });
               },
             ),
-
             if (selectedRegion != null)
               DropdownButtonFormField<String>(
                 decoration: const InputDecoration(labelText: 'Tuman'),
                 value: selectedDistrict,
-                items:
-                    districts
-                        .map(
-                          (district) => DropdownMenuItem(
-                            value: district,
-                            child: Text(district),
-                          ),
-                        )
-                        .toList(),
+                items: districts
+                    .map(
+                      (district) => DropdownMenuItem(
+                        value: district,
+                        child: Text(district),
+                      ),
+                    )
+                    .toList(),
                 onChanged: (value) => setState(() => selectedDistrict = value),
               ),
-
             const SizedBox(height: 20),
             Spacer(),
             CustomButton(
@@ -101,8 +96,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     name: nameController.text,
                     surname: surnameController.text,
                     age: ageController.text,
-                    region: selectedRegion!,
-                    district: selectedDistrict!,
+                    region: selectedRegion ?? 'Fergana',
+                    district: selectedDistrict ?? "Toshloq",
+                    time: DateTime.now(),
                   );
                   HiveService.saveUser(user);
                   Navigator.pushReplacement(

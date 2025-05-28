@@ -20,13 +20,13 @@ List<CompetitorModel> competitors = [
     score: 55,
   ),
   CompetitorModel(
-    fullName: 'Dilshod Toshpo‘latov',
+    fullName: 'Dilshoda Toshpo‘latova',
     imagePath: 'assets/images/compo9.jpg',
     joinedFields: 'Matematika',
     score: 78,
   ),
   CompetitorModel(
-    fullName: 'Ziyoda Abduvaliyeva',
+    fullName: 'Suhrobjon Abduvaliyev',
     imagePath: 'assets/images/compo3.jpg',
     joinedFields: 'Matematika',
     score: 62,
@@ -44,7 +44,7 @@ List<CompetitorModel> competitors = [
     score: 73,
   ),
   CompetitorModel(
-    fullName: 'Mohira Yo‘ldosheva',
+    fullName: 'Mohirbek Yo‘ldoshev',
     imagePath: 'assets/images/compo6.jpg',
     joinedFields: 'Ona tili',
     score: 67,
@@ -56,19 +56,19 @@ List<CompetitorModel> competitors = [
     score: 59,
   ),
   CompetitorModel(
-    fullName: 'Rayhona Jo‘rayeva',
+    fullName: 'Sardor Jo‘rayev',
     imagePath: 'assets/images/compo8.jpg',
     joinedFields: 'Ona tili',
     score: 91,
   ),
   CompetitorModel(
-    fullName: 'Ulug‘bek Rahimov',
+    fullName: 'Ruxshona Rahimova',
     imagePath: 'assets/images/compo9.jpg',
     joinedFields: 'Ona tili',
     score: 84,
   ),
   CompetitorModel(
-    fullName: 'Dilnoza Mahmudova',
+    fullName: 'Nodirbek Mahmudov',
     imagePath: 'assets/images/compo10.jpg',
     joinedFields: 'Ona tili',
     score: 76,

@@ -37,6 +37,7 @@ class Fields extends StatelessWidget {
         CourseCard(
           title: 'Intensiv Ona Tili Kursi',
           subtitle: "Ona tilini o'rganing va\nyangi yo'llarni kashf eting",
+          imagePath: 'assets/images/books.png',
           color: const Color(0xFF9EFFFF),
           onPressed: () {
             Navigator.push(
@@ -55,7 +56,7 @@ class Fields extends StatelessWidget {
         CourseCard(
           isInProgress: true,
           title: 'Zamonaviy Axborot Texnologiyalari kursi',
-          subtitle: "Ingliz tilini o'yin o'ynab o'rganing",
+          subtitle: "Informatika  fanini o'rganing ",
           color: const Color(0xFF91F48F).withValues(alpha: 0.2),
           onPressed: () {},
         ),

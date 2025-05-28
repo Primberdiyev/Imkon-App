@@ -32,7 +32,7 @@ class CharactersPage extends StatelessWidget {
                           );
                         },
                         text:
-                            'Sizga barcha harflar namoyish etilari va siz ularni talaffuz qilishing kerak.\n\ boshlaymizmi?',
+                            'Sizga barcha harflar namoyish etiladi va siz ularni talaffuz qilishing kerak.\n\ boshlaymizmi?',
                       ),
                 );
               },

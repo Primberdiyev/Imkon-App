@@ -13,16 +13,15 @@ class _StaticsState extends State<Statics> {
 
   @override
   Widget build(BuildContext context) {
-    final filteredCompetitors =
-        competitors
-            .where(
-              (comp) =>
-                  comp.joinedFields.toLowerCase() ==
-                  selectedField.toLowerCase(),
-            )
-            .toList();
+    final filteredCompetitors = competitors
+        .where(
+          (comp) =>
+              comp.joinedFields.toLowerCase() == selectedField.toLowerCase(),
+        )
+        .toList();
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
           'Raqobat Jadvali',
@@ -42,13 +41,12 @@ class _StaticsState extends State<Statics> {
                 filled: true,
               ),
               value: selectedField,
-              items:
-                  fields
-                      .map(
-                        (field) =>
-                            DropdownMenuItem(value: field, child: Text(field)),
-                      )
-                      .toList(),
+              items: fields
+                  .map(
+                    (field) =>
+                        DropdownMenuItem(value: field, child: Text(field)),
+                  )
+                  .toList(),
               onChanged: (value) {
                 setState(() {
                   selectedField = value ?? fields[0];

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:audioplayers/audioplayers.dart'; // Add this import
 
 class FamilyPage extends StatefulWidget {
   const FamilyPage({Key? key}) : super(key: key);
@@ -11,16 +12,56 @@ class FamilyPage extends StatefulWidget {
 
 class _FamilyPageState extends State<FamilyPage> {
   final List<Map<String, String>> words = [
-    {"word": "Ota", "image": "assets/images/family/ota.jpg"},
-    {"word": "Ona", "image": "assets/images/family/ona.jpg"},
-    {"word": "Bola", "image": "assets/images/family/bola.jpg"},
-    {"word": "Qizi", "image": "assets/images/family/qizi.jpg"},
-    {"word": "O‘g‘il", "image": "assets/images/family/ogil.jpg"},
-    {"word": "Bobo", "image": "assets/images/family/bobo.jpg"},
-    {"word": "Buvijon", "image": "assets/images/family/buvijon.jpg"},
-    {"word": "Opa", "image": "assets/images/family/opa.jpg"},
-    {"word": "Uka", "image": "assets/images/family/uka.jpg"},
-    {"word": "Xola", "image": "assets/images/family/xola.jpg"},
+    {
+      "word": "Ota",
+      "image": "assets/images/family/ota.jpg",
+      'music': 'musics/ota.mp3'
+    },
+    {
+      "word": "Ona",
+      "image": "assets/images/family/ona.jpg",
+      'music': 'musics/ona.mp3'
+    },
+    {
+      "word": "Bola",
+      "image": "assets/images/family/bola.jpg",
+      'music': 'musics/bola.mp3'
+    },
+    {
+      "word": "Qizi",
+      "image": "assets/images/family/qizi.jpg",
+      'music': 'musics/qizi.mp3'
+    },
+    {
+      "word": "O‘g‘il",
+      "image": "assets/images/family/ogil.jpg",
+      'music': 'musics/ogil.mp3'
+    },
+    {
+      "word": "Bobo",
+      "image": "assets/images/family/bobo.jpg",
+      'music': 'musics/bobo.mp3'
+    },
+    {
+      "word": "Buvijon",
+      "image": "assets/images/family/buvijon.jpg",
+      'music': 'musics/buvijon.mp3'
+    },
+    {
+      "word": "Opa",
+      "image": "assets/images/family/opa.jpg",
+      'music': 'musics/opa.mp3'
+    },
+    {
+      "word": "Uka",
+      "image": "assets/images/family/uka.jpg",
+      'music': 'musics/uka.mp3'
+    },
+    {
+      "word": "Xola",
+      "image": "assets/images/family/xola.jpg",
+      'music': 'musics/xola.mp3'
+    },
   ];
 
   final List<Color> bgColors = [
@@ -40,11 +81,21 @@ class _FamilyPageState extends State<FamilyPage> {
   int countdown = 10;
   Timer? timer;
   Timer? countdownTimer;
+  final AudioPlayer audioPlayer = AudioPlayer(); // Add audio player instance
 
   @override
   void initState() {
     super.initState();
     startTimers();
+    _playCurrentWordAudio(); // Play audio for the first word
+  }
+
+  void _playCurrentWordAudio() async {
+    try {
+      await audioPlayer.play(AssetSource(words[currentIndex]['music']!));
+    } catch (e) {
+      print('Error playing audio: $e');
+    }
   }
 
   void startTimers() {
@@ -70,12 +121,24 @@ class _FamilyPageState extends State<FamilyPage> {
         } else {
           currentIndex++;
           countdown = 10;
+          _playCurrentWordAudio(); // Play audio for the new word
         }
       });
     });
   }
 
-  void showDialogToUser() {
+  void showDialogToUser() async {
+    // Play appropriate audio based on current index
+    try {
+      if (currentIndex == 4) {
+        await audioPlayer.play(AssetSource('musics/select_and_create.mp3'));
+      } else if (currentIndex == 9) {
+        await audioPlayer.play(AssetSource('musics/hikoya_tuzing.mp3'));
+      }
+    } catch (e) {
+      print('Error playing dialog audio: $e');
+    }
+
     int startIndex = currentIndex == 4 ? 0 : 5;
     int endIndex = currentIndex == 4 ? 5 : 10;
 
@@ -174,14 +237,14 @@ class _FamilyPageState extends State<FamilyPage> {
                   onPressed: () {
                     Navigator.pop(context);
                     if (currentIndex == 9) {
-                      // Oxirgi dialogda faqat shu amal bajariladi
-                      Navigator.pop(context); // Pop contextni ham yoping
+                      Navigator.pop(context);
                     } else if (currentIndex == 4) {
                       setState(() {
                         currentIndex = 5;
                         countdown = 10;
                       });
                       startTimers();
+                      _playCurrentWordAudio(); // Play audio for the new word
                     }
                   },
                   child: Text(
@@ -205,6 +268,7 @@ class _FamilyPageState extends State<FamilyPage> {
   void dispose() {
     timer?.cancel();
     countdownTimer?.cancel();
+    audioPlayer.dispose(); // Dispose the audio player
     super.dispose();
   }
 
@@ -300,6 +364,12 @@ class _FamilyPageState extends State<FamilyPage> {
                   fontWeight: FontWeight.w600,
                   color: Colors.deepPurple,
                 ),
+              ),
+              const SizedBox(height: 20),
+              IconButton(
+                icon: Icon(Icons.volume_up, size: 40),
+                color: Colors.deepPurple,
+                onPressed: _playCurrentWordAudio,
               ),
             ],
           ),

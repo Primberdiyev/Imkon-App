@@ -11,10 +11,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => AudioService()),
-        ChangeNotifierProvider(create: (_) => MultiplicationProvider()),
+        ChangeNotifierProvider(
+          create: (_) => AudioService(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => MultiplicationProvider(),
+        ),
       ],
-      child: MaterialApp(home: SplashPage(), debugShowCheckedModeBanner: false),
+      child: MaterialApp(
+        home: SplashPage(),
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }

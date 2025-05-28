@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:imkon/features/utils/app_images.dart';
+import 'package:audioplayers/audioplayers.dart'; // Add this import
 
 class SchoolPage extends StatefulWidget {
   const SchoolPage({Key? key}) : super(key: key);
@@ -12,16 +13,56 @@ class SchoolPage extends StatefulWidget {
 
 class _MaktabPageState extends State<SchoolPage> {
   final List<Map<String, String>> words = [
-    {"word": "O‘quvchi", "image": "assets/images/school/oquvchi.jpg"},
-    {"word": "O‘qituvchi", "image": "assets/images/school/oqituvchi.jpg"},
-    {"word": "Sinfxona", "image": "assets/images/school/sinfxona.jpg"},
-    {"word": "Darslik", "image": "assets/images/school/darslik.jpg"},
-    {"word": "Sport Zal", "image": "assets/images/school/sport.jpg"},
-    {"word": "Reja", "image": "assets/images/school/reja.jpg"},
-    {"word": "Tadbir", "image": "assets/images/school/tadbir.jpg"},
-    {"word": "Qo'ng'iroq", "image": "assets/images/school/qongiroq.jpg"},
-    {"word": "Imtihon", "image": "assets/images/school/imtihon.jpg"},
-    {"word": "Diplom", "image": "assets/images/school/diplom.jpg"},
+    {
+      "word": "O'quvchi",
+      "image": "assets/images/school/oquvchi.jpg",
+      'music': 'musics/oquvchi.mp3'
+    },
+    {
+      "word": "O'qituvchi",
+      "image": "assets/images/school/oqituvchi.jpg",
+      'music': 'musics/oqituvchi.mp3'
+    },
+    {
+      "word": "Sinfxona",
+      "image": "assets/images/school/sinfxona.jpg",
+      'music': 'musics/sinfxona.mp3'
+    },
+    {
+      "word": "Darslik",
+      "image": "assets/images/school/darslik.jpg",
+      'music': 'musics/darslik.mp3'
+    },
+    {
+      "word": "Sport Zal",
+      "image": "assets/images/school/sport.jpg",
+      'music': 'musics/sport_zal.mp3'
+    },
+    {
+      "word": "Reja",
+      "image": "assets/images/school/reja.jpg",
+      'music': 'musics/reja.mp3'
+    },
+    {
+      "word": "Tadbir",
+      "image": "assets/images/school/tadbir.jpg",
+      'music': 'musics/tadbir.mp3'
+    },
+    {
+      "word": "Qo'ng'iroq",
+      "image": "assets/images/school/qongiroq.jpg",
+      'music': 'musics/qongiroq.mp3'
+    },
+    {
+      "word": "Imtihon",
+      "image": "assets/images/school/imtihon.jpg",
+      'music': 'musics/imtihon.mp3'
+    },
+    {
+      "word": "Diplom",
+      "image": "assets/images/school/diplom.jpg",
+      'music': 'musics/diplom.mp3'
+    },
   ];
 
   final List<Color> bgColors = [
@@ -41,11 +82,21 @@ class _MaktabPageState extends State<SchoolPage> {
   int countdown = 10;
   Timer? timer;
   Timer? countdownTimer;
+  final AudioPlayer audioPlayer = AudioPlayer(); // Add audio player instance
 
   @override
   void initState() {
     super.initState();
     startTimers();
+    _playCurrentWordAudio(); // Play audio for the first word
+  }
+
+  void _playCurrentWordAudio() async {
+    try {
+      await audioPlayer.play(AssetSource(words[currentIndex]['music']!));
+    } catch (e) {
+      print('Error playing audio: $e');
+    }
   }
 
   void startTimers() {
@@ -71,12 +122,24 @@ class _MaktabPageState extends State<SchoolPage> {
         } else {
           currentIndex++;
           countdown = 10;
+          _playCurrentWordAudio(); // Play audio for the new word
         }
       });
     });
   }
 
-  void showDialogToUser() {
+  void showDialogToUser() async {
+    // Play appropriate audio based on current index
+    try {
+      if (currentIndex == 4) {
+        await audioPlayer.play(AssetSource('musics/select_and_create.mp3'));
+      } else if (currentIndex == 9) {
+        await audioPlayer.play(AssetSource('musics/hikoya_tuzing.mp3'));
+      }
+    } catch (e) {
+      print('Error playing dialog audio: $e');
+    }
+
     int startIndex = currentIndex == 4 ? 0 : 5;
     int endIndex = currentIndex == 4 ? 5 : 10;
 
@@ -117,8 +180,8 @@ class _MaktabPageState extends State<SchoolPage> {
                       currentIndex == 4
                           ? "Namoyish etilgan so'zlarni ustozingizga ayting va ixtiyoriy 2 tasini tanlab gap tuzing."
                           : currentIndex == 9
-                          ? "Endi ushbu so'zlardan foydalanib hikoya tuzing va ustozingizga ayting."
-                          : "Namoyish etilgan so'zlardan foydalanib Hikoya tuzing va uni ustozingizga aytib bering!",
+                              ? "Endi ushbu so'zlardan foydalanib hikoya tuzing va ustozingizga ayting."
+                              : "Namoyish etilgan so'zlardan foydalanib Hikoya tuzing va uni ustozingizga aytib bering!",
                       style: GoogleFonts.poppins(fontSize: 16),
                       textAlign: TextAlign.center,
                     ),
@@ -156,7 +219,7 @@ class _MaktabPageState extends State<SchoolPage> {
                         ),
                       )
                     else
-                      Image.asset(AppImages.verify, width: 200, height: 200),
+                      Image.asset(AppImages.verify, width: 150, height: 150),
                   ],
                 ),
               ),
@@ -180,13 +243,14 @@ class _MaktabPageState extends State<SchoolPage> {
                   onPressed: () {
                     Navigator.pop(context);
                     if (currentIndex == 9) {
-                      Navigator.pop(context); // chiqib ketish (bosh sahifa)
+                      Navigator.pop(context);
                     } else if (currentIndex == 4) {
                       setState(() {
                         currentIndex = 5;
                         countdown = 10;
                       });
                       startTimers();
+                      _playCurrentWordAudio(); // Play audio for the new word
                     }
                   },
                   child: Text(
@@ -210,6 +274,7 @@ class _MaktabPageState extends State<SchoolPage> {
   void dispose() {
     timer?.cancel();
     countdownTimer?.cancel();
+    audioPlayer.dispose(); // Dispose the audio player
     super.dispose();
   }
 
@@ -305,6 +370,12 @@ class _MaktabPageState extends State<SchoolPage> {
                   fontWeight: FontWeight.w600,
                   color: Colors.indigo,
                 ),
+              ),
+              const SizedBox(height: 20),
+              IconButton(
+                icon: Icon(Icons.volume_up, size: 40),
+                color: Colors.indigo,
+                onPressed: _playCurrentWordAudio,
               ),
             ],
           ),

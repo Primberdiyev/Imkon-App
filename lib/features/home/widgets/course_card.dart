@@ -20,10 +20,9 @@ class CourseCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bgColor =
-        isInProgress
-            ? Color.alphaBlend(Colors.black.withValues(alpha: 0.1), color)
-            : color;
+    final bgColor = isInProgress
+        ? Color.alphaBlend(Colors.black.withValues(alpha: 0.1), color)
+        : color;
 
     return Stack(
       children: [
@@ -54,45 +53,44 @@ class CourseCard extends StatelessWidget {
               const SizedBox(height: 15),
               isInProgress
                   ? const Text(
-                    'Jarayonda',
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  )
-                  : TextButton(
-                    style: TextButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      backgroundColor: Colors.white,
-                    ),
-                    onPressed: onPressed,
-                    child: Text(
-                      'Boshlash',
+                      'Jarayonda',
                       style: TextStyle(
-                        color: Colors.deepOrange.withValues(alpha: 0.8),
-                        fontSize: 14,
+                        color: Colors.grey,
+                        fontSize: 20,
                         fontWeight: FontWeight.w700,
                       ),
+                    )
+                  : TextButton(
+                      style: TextButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        backgroundColor: Colors.white,
+                      ),
+                      onPressed: onPressed,
+                      child: Text(
+                        'Boshlash',
+                        style: TextStyle(
+                          color: Colors.deepOrange.withValues(alpha: 0.8),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
                     ),
-                  ),
             ],
           ),
         ),
         Positioned(
-          bottom: 30,
-          right: 40,
-          child:
-              imagePath != null
-                  ? Image.asset(
-                    imagePath ?? "",
-                    fit: BoxFit.cover,
-                    height: 80,
-                    width: 80,
-                  )
-                  : SizedBox.shrink(),
+          bottom: 10,
+          right: 30,
+          child: imagePath != null
+              ? Image.asset(
+                  imagePath ?? "",
+                  fit: BoxFit.cover,
+                  height: 80,
+                  width: 80,
+                )
+              : SizedBox.shrink(),
         ),
       ],
     );
