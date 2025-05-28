@@ -68,7 +68,6 @@ class _MathGameAdvancedState extends State<MathGameAdvanced>
   Future<void> _playQuestionAudio() async {
     if (_currentQuestionIndex >= _questionAudios.length) return;
 
-    // Cancel any existing audio subscription
     _audioCompleteSubscription?.cancel();
 
     try {
@@ -76,15 +75,12 @@ class _MathGameAdvancedState extends State<MathGameAdvanced>
         _isAudioPlaying = true;
       });
 
-      // Stop any currently playing audio
       await _audioPlayer.stop();
 
-      // Play the new audio
       await _audioPlayer.play(
         AssetSource(_questionAudios[_currentQuestionIndex]),
       );
 
-      // Listen for audio completion
       _audioCompleteSubscription = _audioPlayer.onPlayerComplete.listen((_) {
         setState(() {
           _isAudioPlaying = false;

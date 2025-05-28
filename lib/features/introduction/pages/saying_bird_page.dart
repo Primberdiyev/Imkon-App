@@ -17,7 +17,9 @@ class SayingBirdPage extends StatelessWidget {
           Container(
             width: 230,
             height: 110,
-            margin: EdgeInsets.only(left: 160),
+            // margin: EdgeInsets.only(left: 160),
+            margin: EdgeInsets.only(
+                left: (MediaQuery.of(context).size.width) / 2 - 50),
             padding: EdgeInsets.all(15),
             decoration: BoxDecoration(
               border: Border.all(color: Color(0xFFAAB0B7)),
@@ -29,7 +31,7 @@ class SayingBirdPage extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 40),
+            padding: const EdgeInsets.only(left: 20, right: 20),
             child: Image.asset(
               'assets/images/saying_bird.png',
               height: 150,

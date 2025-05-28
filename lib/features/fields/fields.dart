@@ -30,7 +30,9 @@ class Fields extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => MathCoursePage()),
+              MaterialPageRoute(
+                builder: (context) => MathCoursePage(),
+              ),
             );
           },
         ),
@@ -42,7 +44,9 @@ class Fields extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => MotherLanguagePage()),
+              MaterialPageRoute(
+                builder: (context) => MotherLanguagePage(),
+              ),
             );
           },
         ),

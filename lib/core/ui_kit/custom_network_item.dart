@@ -21,7 +21,7 @@ class CustomNetworkItem extends StatelessWidget {
       child: Container(
         width: MediaQuery.of(context).size.width - 50,
         margin: const EdgeInsets.symmetric(vertical: 15),
-        height: 80,
+        height: 65,
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
@@ -38,7 +38,7 @@ class CustomNetworkItem extends StatelessWidget {
             Text(
               text,
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 18,
                 fontFamily: 'myFirstFont',
                 color: isSelected ? Colors.white : Colors.black,
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,

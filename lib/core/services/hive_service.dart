@@ -24,4 +24,6 @@ class HiveService {
   static Future<void> editUser(int index, UserModel newUser) async {
     await userBox.putAt(index, newUser);
   }
+
+ 
 }

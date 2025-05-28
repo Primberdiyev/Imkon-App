@@ -40,13 +40,16 @@ class CourseCard extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: const TextStyle(fontSize: 24, fontFamily: 'myFirstFont'),
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontFamily: 'myFirstFont',
+                ),
               ),
               const SizedBox(height: 5),
               Text(
                 subtitle,
                 style: const TextStyle(
-                  fontSize: 18,
+                  fontSize: 16,
                   fontWeight: FontWeight.w500,
                 ),
               ),

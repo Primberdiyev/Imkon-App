@@ -44,22 +44,21 @@ class _MathCoursePageState extends State<MathCoursePage> {
                 _playDialogSound('musics/attention_qoshish.mp3');
                 showDialog(
                   context: context,
-                  builder:
-                      (context) => AttentionDialog(
-                        audioPlayer: audioPlayer,
-                        function: () {
-                          Navigator.of(context).pop();
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => FixedMathGamePage(),
-                            ),
-                          );
-                        },
-                        text:
-                            'Sizga tasodifiy sonlar beriladi va siz ularni tezkorlik bilan hisoblashingiz kerak.\n\nO‘yinni boshlaymizmi?',
-                        startSound: 'musics/diqqat_boshlanmoqda.mp3',
-                      ),
+                  builder: (context) => AttentionDialog(
+                    audioPlayer: audioPlayer,
+                    function: () {
+                      Navigator.of(context).pop();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => FixedMathGamePage(),
+                        ),
+                      );
+                    },
+                    text:
+                        'Sizga tasodifiy sonlar beriladi va siz ularni tezkorlik bilan hisoblashingiz kerak.\n\nO‘yinni boshlaymizmi?',
+                    startSound: 'musics/diqqat_boshlanmoqda.mp3',
+                  ),
                 );
               },
               text: '(0...............99)±',
@@ -75,22 +74,21 @@ class _MathCoursePageState extends State<MathCoursePage> {
 
                   showDialog(
                     context: context,
-                    builder:
-                        (context) => AttentionDialog(
-                          audioPlayer: audioPlayer,
-                          startSound: 'musics/diqqat_boshlanmoqda.mp3',
-                          function: () {
-                            Navigator.of(context).pop();
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => MultiplicationPage(),
-                              ),
-                            );
-                          },
-                          text:
-                              'Sizga tasodifiy sonlar beriladi va siz ularni tezkorlik bilan kopaytirishingiz kerak.\n\nO‘yinni boshlaymizmi?',
-                        ),
+                    builder: (context) => AttentionDialog(
+                      audioPlayer: audioPlayer,
+                      startSound: 'musics/diqqat_boshlanmoqda.mp3',
+                      function: () {
+                        Navigator.of(context).pop();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => MultiplicationPage(),
+                          ),
+                        );
+                      },
+                      text:
+                          'Sizga tasodifiy sonlar beriladi va siz ularni tezkorlik bilan kopaytirishingiz kerak.\n\nO‘yinni boshlaymizmi?',
+                    ),
                   );
                 },
                 text: '(0...............9) x',
@@ -104,22 +102,21 @@ class _MathCoursePageState extends State<MathCoursePage> {
                 _playDialogSound('musics/attention_bolish.mp3');
                 showDialog(
                   context: context,
-                  builder:
-                      (context) => AttentionDialog(
-                        startSound: 'musics/diqqat_boshlanmoqda.mp3',
-                        audioPlayer: audioPlayer,
-                        function: () {
-                          Navigator.of(context).pop();
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => DivisionGamePage(),
-                            ),
-                          );
-                        },
-                        text:
-                            'Sizga tasodifiy sonlar beriladi va siz ularni tezkorlik bilan bo\'lishingiz kerak.\n\nO‘yinni boshlaymizmi?',
-                      ),
+                  builder: (context) => AttentionDialog(
+                    startSound: 'musics/diqqat_boshlanmoqda.mp3',
+                    audioPlayer: audioPlayer,
+                    function: () {
+                      Navigator.of(context).pop();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => DivisionGamePage(),
+                        ),
+                      );
+                    },
+                    text:
+                        'Sizga tasodifiy sonlar beriladi va siz ularni tezkorlik bilan bo\'lishingiz kerak.\n\nO‘yinni boshlaymizmi?',
+                  ),
                 );
               },
               text: '(0...............50) %',
@@ -135,22 +132,21 @@ class _MathCoursePageState extends State<MathCoursePage> {
 
                   showDialog(
                     context: context,
-                    builder:
-                        (context) => AttentionDialog(
-                          audioPlayer: audioPlayer,
-                          startSound: 'musics/diqqat_boshlanmoqda.mp3',
-                          function: () {
-                            Navigator.of(context).pop();
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => MathGameAdvanced(),
-                              ),
-                            );
-                          },
-                          text:
-                              'Sizga  misollar beriladi va siz ularni tezkorlik bilan hisoblashingiz kerak.\n\nO‘yinni boshlaymizmi?',
-                        ),
+                    builder: (context) => AttentionDialog(
+                      audioPlayer: audioPlayer,
+                      startSound: 'musics/diqqat_boshlanmoqda.mp3',
+                      function: () {
+                        Navigator.of(context).pop();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => MathGameAdvanced(),
+                          ),
+                        );
+                      },
+                      text:
+                          'Sizga  misollar beriladi va siz ularni tezkorlik bilan hisoblashingiz kerak.\n\nO‘yinni boshlaymizmi?',
+                    ),
                   );
                 },
                 text: '(0...............50) ± x  %',
@@ -165,23 +161,21 @@ class _MathCoursePageState extends State<MathCoursePage> {
 
                 showDialog(
                   context: context,
-                  builder:
-                      (context) => AttentionDialog(
-                        audioPlayer: audioPlayer,
-                        startSound: 'musics/diqqat_boshlanmoqda.mp3',
-
-                        function: () {
-                          Navigator.of(context).pop();
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => GuessNumberGame(),
-                            ),
-                          );
-                        },
-                        text:
-                            'Komputer son o\'ylaydi va siz o\'sha sonni  topishing kerak.\n\nO‘yinni boshlaymizmi?',
-                      ),
+                  builder: (context) => AttentionDialog(
+                    audioPlayer: audioPlayer,
+                    startSound: 'musics/diqqat_boshlanmoqda.mp3',
+                    function: () {
+                      Navigator.of(context).pop();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => GuessNumberGame(),
+                        ),
+                      );
+                    },
+                    text:
+                        'Komputer son o\'ylaydi va siz o\'sha sonni  topishing kerak.\n\nO‘yinni boshlaymizmi?',
+                  ),
                 );
               },
               text: "Taxmin o'yini o'yini",
@@ -196,23 +190,21 @@ class _MathCoursePageState extends State<MathCoursePage> {
 
                 showDialog(
                   context: context,
-                  builder:
-                      (context) => AttentionDialog(
-                        audioPlayer: audioPlayer,
-                        startSound: 'musics/diqqat_boshlanmoqda.mp3',
-
-                        function: () {
-                          Navigator.of(context).pop();
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => LogicQuestionsPage(),
-                            ),
-                          );
-                        },
-                        text:
-                            'Sizga ketma ket mantiqiy savollar beriladi va siz ularni topishing kerak.\n\nO‘yinni boshlaymizmi?',
-                      ),
+                  builder: (context) => AttentionDialog(
+                    audioPlayer: audioPlayer,
+                    startSound: 'musics/diqqat_boshlanmoqda.mp3',
+                    function: () {
+                      Navigator.of(context).pop();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => LogicQuestionsPage(),
+                        ),
+                      );
+                    },
+                    text:
+                        'Sizga ketma ket mantiqiy savollar beriladi va siz ularni topishing kerak.\n\nO‘yinni boshlaymizmi?',
+                  ),
                 );
               },
               text: "Mantiqiy savollar",

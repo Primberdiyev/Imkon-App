@@ -55,7 +55,7 @@ class _AskingKnowledgePageState extends State<AskingKnowledgePage> {
             onTap: () => selectItem('Bu sohada yangiman'),
           ),
           CustomNetworkItem(
-            text: 'Boshlang\'ich bilimlarga \negaman',
+            text: 'Endi o\'rganmoqdaman',
             imagePath: AppImages.preLevel,
             isSelected: selectedItem == 'Boshlang\'ich bilimlarga \negaman',
             onTap: () => selectItem('Boshlang\'ich bilimlarga \negaman'),
@@ -67,10 +67,10 @@ class _AskingKnowledgePageState extends State<AskingKnowledgePage> {
             onTap: () => selectItem('Asosiy bilimlarga egaman'),
           ),
           CustomNetworkItem(
-            text: 'Mustahkam bilimgan \negaman',
+            text: 'Mustahkam bilimga egaman',
             imagePath: AppImages.expert,
-            isSelected: selectedItem == 'Mustahkam bilimgan \negaman',
-            onTap: () => selectItem('Mustahkam bilimgan \negaman'),
+            isSelected: selectedItem == 'Mustahkam bilimga egaman',
+            onTap: () => selectItem('Mustahkam bilimga egaman'),
           ),
         ],
       ),
