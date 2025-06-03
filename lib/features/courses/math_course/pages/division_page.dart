@@ -11,7 +11,7 @@ class DivisionGamePage extends StatefulWidget {
 
 class _DivisionGamePageState extends State<DivisionGamePage> {
   int preCountdown = 5;
-  int questionCountdown = 10;
+  int questionCountdown = 5;
   Timer? timer;
   Timer? questionTimer;
   final TextEditingController controller = TextEditingController();
@@ -53,18 +53,26 @@ class _DivisionGamePageState extends State<DivisionGamePage> {
   Future<void> playQuestionAudio() async {
     try {
       await audioPlayer.stop();
-      await audioPlayer.play(AssetSource(questions[currentQuestion]['music']));
+      await audioPlayer.play(
+        AssetSource(
+          questions[currentQuestion]['music'],
+        ),
+      );
     } catch (e) {
       print("Audio o'ynatishda xato: $e");
     }
   }
 
   Future<void> playCorrectSound() async {
-    await audioPlayer.play(AssetSource('musics/togri.mp3'));
+    await audioPlayer.play(
+      AssetSource('musics/togri.mp3'),
+    );
   }
 
   Future<void> playWrongSound() async {
-    await audioPlayer.play(AssetSource('musics/notogri.mp3'));
+    await audioPlayer.play(
+      AssetSource('musics/notogri.mp3'),
+    );
   }
 
   void startPreCountdown(bool condition) {
@@ -105,7 +113,7 @@ class _DivisionGamePageState extends State<DivisionGamePage> {
 
   void startQuestionTimer() {
     questionTimer?.cancel();
-    questionCountdown = 10;
+    questionCountdown = 5;
 
     questionTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
@@ -123,11 +131,10 @@ class _DivisionGamePageState extends State<DivisionGamePage> {
 
     setState(() {
       buttonPressed = true;
-
-      int userAnswer = skip ? -1 : int.tryParse(controller.text.trim()) ?? -1;
+      String userAnswer = (skip ? -1 : (controller.text.trim())).toString();
       int correctAnswer = questions[currentQuestion]['answer'];
 
-      isCorrect = userAnswer == correctAnswer;
+      isCorrect = userAnswer.toString().contains(correctAnswer.toString());
       if (isCorrect) {
         score++;
         playCorrectSound();

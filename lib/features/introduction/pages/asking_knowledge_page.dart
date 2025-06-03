@@ -33,8 +33,9 @@ class _AskingKnowledgePageState extends State<AskingKnowledgePage> {
             children: [
               Image.asset(AppImages.bird, width: 80, height: 80),
               Container(
-                height: 70,
+                height: 100,
                 width: 220,
+                alignment: Alignment.center,
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),

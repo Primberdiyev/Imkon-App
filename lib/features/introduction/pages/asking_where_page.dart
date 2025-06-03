@@ -33,8 +33,9 @@ class _AskingWherePageState extends State<AskingWherePage> {
             children: [
               Image.asset(AppImages.bird, width: 80, height: 80),
               Container(
-                height: 70,
-                width: 220,
+                height: 100,
+                width: 250,
+                alignment: Alignment.center,
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
@@ -42,7 +43,7 @@ class _AskingWherePageState extends State<AskingWherePage> {
                 ),
                 child: const Text(
                   'Imkon ilovasi haqida qayerdan eshitdingiz?',
-                  style: TextStyle(fontSize: 18),
+                  style: TextStyle(fontSize: 16),
                 ),
               ),
             ],

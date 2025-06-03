@@ -41,7 +41,11 @@ class _SplashPageState extends State<SplashPage> {
     return Scaffold(
       backgroundColor: const Color(0xFFFFD700),
       body: Center(
-        child: Image.asset(AppImages.bigBird, height: 200, width: 200),
+        child: Image.asset(
+          AppImages.bigBird,
+          height: 200,
+          width: 200,
+        ),
       ),
     );
   }

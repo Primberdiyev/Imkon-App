@@ -24,7 +24,7 @@ class Fields extends StatelessWidget {
         ),
         CourseCard(
           imagePath: AppImages.tools,
-          title: 'Bepul Matematika Kursi',
+          title: 'Matematika Kursi',
           subtitle: "Matematikani tez, oson va\nsamarali o'rganing",
           color: const Color(0xFFFFF599),
           onPressed: () {

@@ -13,10 +13,10 @@ class FixedMathGamePage extends StatefulWidget {
 class _FixedMathGamePageState extends State<FixedMathGamePage>
     with SingleTickerProviderStateMixin {
   final AudioPlayer _audioPlayer = AudioPlayer();
-  int countdown = 5;
+  int countdown = 3;
   int questionIndex = 0;
   int currentNumberIndex = 0;
-  int questionCountdown = 5;
+  int questionCountdown = 3;
   Timer? countdownTimer;
   Timer? questionTimer;
   bool isGameStarted = false;
@@ -57,7 +57,7 @@ class _FixedMathGamePageState extends State<FixedMathGamePage>
     setState(() {
       isGameStarted = true;
       currentNumberIndex = 0;
-      questionCountdown = 5;
+      questionCountdown = 3;
     });
     showNextQuestion();
   }
@@ -69,7 +69,7 @@ class _FixedMathGamePageState extends State<FixedMathGamePage>
       _animationController.forward(from: 0);
 
       for (var i = 0; i < questions.length; i++) {
-        questionCountdown = 5;
+        questionCountdown = 3;
         questionTimer?.cancel();
 
         questionTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -121,53 +121,52 @@ class _FixedMathGamePageState extends State<FixedMathGamePage>
 
     showDialog(
       context: context,
-      builder:
-          (ctx) => AlertDialog(
-            title: Center(
-              child: Text(
-                isCorrect ? '✅ Barakalla!' : '❌ Notog‘ri!',
-                textAlign: TextAlign.center,
+      builder: (ctx) => AlertDialog(
+        title: Center(
+          child: Text(
+            isCorrect ? '✅ Barakalla!' : '❌ Notog‘ri!',
+            textAlign: TextAlign.center,
+          ),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('To‘g‘ri javob: $correct'),
+            Text('Sizning javobingiz: $userAnswer'),
+          ],
+        ),
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Bosh Sahifa'),
               ),
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('To‘g‘ri javob: $correct'),
-                Text('Sizning javobingiz: $userAnswer'),
-              ],
-            ),
-            actions: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('Bosh Sahifa'),
+              TextButton(
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
                   ),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.of(ctx).pop();
-                      controller.nextExample();
-                      restartGame();
-                    },
-                    child: const Text(
-                      'Davom etish',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ],
+                ),
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                  controller.nextExample();
+                  restartGame();
+                },
+                child: const Text(
+                  'Davom etish',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             ],
           ),
+        ],
+      ),
     );
   }
 
@@ -212,103 +211,102 @@ class _FixedMathGamePageState extends State<FixedMathGamePage>
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
-                child:
-                    isGameStarted
-                        ? Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            if (!isAnswering)
-                              Column(
-                                children: [
-                                  ScaleTransition(
-                                    scale: Tween(begin: 0.5, end: 1.0).animate(
-                                      CurvedAnimation(
-                                        parent: _animationController,
-                                        curve: Curves.elasticOut,
-                                      ),
-                                    ),
-                                    child: Text(
-                                      currentDisplayNumber,
-                                      style: const TextStyle(
-                                        fontSize: 64,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                child: isGameStarted
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          if (!isAnswering)
+                            Column(
+                              children: [
+                                ScaleTransition(
+                                  scale: Tween(begin: 0.5, end: 1.0).animate(
+                                    CurvedAnimation(
+                                      parent: _animationController,
+                                      curve: Curves.elasticOut,
                                     ),
                                   ),
-                                  const SizedBox(height: 20),
-                                  Text(
-                                    '${currentNumberIndex + 1}/${controller.currentExample.length}',
+                                  child: Text(
+                                    currentDisplayNumber,
                                     style: const TextStyle(
-                                      fontSize: 24,
-                                      color: Colors.blue,
+                                      fontSize: 64,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    '⏱ Vaqt: $questionCountdown',
-                                    style: const TextStyle(
-                                      fontSize: 24,
-                                      color: Colors.red,
+                                ),
+                                const SizedBox(height: 20),
+                                Text(
+                                  '${currentNumberIndex + 1}/${controller.currentExample.length}',
+                                  style: const TextStyle(
+                                    fontSize: 24,
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                Text(
+                                  '⏱ Vaqt: $questionCountdown',
+                                  style: const TextStyle(
+                                    fontSize: 24,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ],
+                            )
+                          else
+                            Column(
+                              children: [
+                                const Text(
+                                  'Natijani kiriting:',
+                                  style: TextStyle(fontSize: 24),
+                                ),
+                                const SizedBox(height: 10),
+                                TextField(
+                                  controller: answerController,
+                                  keyboardType: TextInputType.number,
+                                  decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    hintText: 'Javobingiz',
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.blue,
+                                    fixedSize: Size(120, 60),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
                                     ),
                                   ),
-                                ],
-                              )
-                            else
-                              Column(
-                                children: [
-                                  const Text(
-                                    'Natijani kiriting:',
-                                    style: TextStyle(fontSize: 24),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  TextField(
-                                    controller: answerController,
-                                    keyboardType: TextInputType.number,
-                                    decoration: const InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      hintText: 'Javobingiz',
+                                  onPressed: checkAnswer,
+                                  child: const Text(
+                                    'Tekshirish',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                                  const SizedBox(height: 20),
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.blue,
-                                      fixedSize: Size(120, 60),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                    ),
-                                    onPressed: checkAnswer,
-                                    child: const Text(
-                                      'Tekshirish',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                          ],
-                        )
-                        : Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              "O'yin boshlanishiga qoldi:",
-                              style: TextStyle(fontSize: 24),
+                                ),
+                              ],
                             ),
-                            const SizedBox(height: 20),
-                            Text(
-                              '$countdown',
-                              style: const TextStyle(
-                                fontSize: 48,
-                                fontWeight: FontWeight.bold,
-                              ),
+                        ],
+                      )
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "O'yin boshlanishiga qoldi:",
+                            style: TextStyle(fontSize: 24),
+                          ),
+                          const SizedBox(height: 20),
+                          Text(
+                            '$countdown',
+                            style: const TextStyle(
+                              fontSize: 48,
+                              fontWeight: FontWeight.bold,
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
+                      ),
               ),
             ),
           ),
